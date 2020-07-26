@@ -91,14 +91,6 @@ void makePermutatios(string prefix, int k) {
     } 
 }
 
-void makeFinalWorld(string str) {
-    int final[n][m];
-    for(int i = 0; i < n; i++)
-        for(int j = 0; j < m; j++)
-            final[i][j] = str[m * i + j] == '*' ? 1 : 0;
-    finalWorld = final[0];
-}
-
 int main() {
     cin >> n >> m >> l;
     int final[n][m];
@@ -108,6 +100,7 @@ int main() {
         cin >> temp;
         str += temp;
     }
+    //store input World to an array and make finalWorld point to it.
     for(int i = 0; i < n; i++)
         for(int j = 0; j < m; j++)
             final[i][j] = str[m * i + j] == '*' ? 1 : 0;
