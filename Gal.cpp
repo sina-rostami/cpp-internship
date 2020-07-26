@@ -54,6 +54,8 @@ bool areEqual(int *arr1, int *arr2) {
     return true;
 }
 
+// convert str to an array (tempWorld), call evolution on it l time and 
+// check if it equals to finalarray or not
 bool check(string str) {
     int onesCntFinal = 0, onesCntTemp = 0;
     int tempWrold[n][m];
@@ -79,6 +81,7 @@ bool check(string str) {
     exit(0);
 }
 
+// make every permutation of that world and pass it to the check function
 void makePermutatios(string prefix, int k) {
     if (k == 0) { 
         check(prefix);
@@ -100,6 +103,7 @@ int main() {
         cin >> temp;
         str += temp;
     }
+    
     //store input World to an array and make finalWorld point to it.
     for(int i = 0; i < n; i++)
         for(int j = 0; j < m; j++)
