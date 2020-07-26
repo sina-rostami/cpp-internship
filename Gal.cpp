@@ -1,8 +1,11 @@
 #include <iostream>
 #include <cstdio>
 using namespace std;
+#define length(x) sizeof(x)/sizeof(int)
+int n, m, l;
+int *finalWorld;
 
-void evolution(int n, int m, int *world) {
+void evolution(int *world) {
 	int temp[n][m];
 	for (int x = 0; x < n; x++)
 		for (int y = 0; y < m; y++) {
@@ -27,7 +30,7 @@ void evolution(int n, int m, int *world) {
 			* (world + x * m + y) = temp[x][y];
 }
 
-void draw(int n, int m, int *world) {
+void draw(int *world) {
 	for (int i = 0; i < n; i++) {
 		for (int j = 0; j < m; j++)
 			cout << (*(world + i*m + j) ? "*" : ".");
@@ -36,7 +39,7 @@ void draw(int n, int m, int *world) {
     printf("\n");
 }
 
-bool isEqual(int *arr1, int *arr2, int n, int m) {
+bool isEqual(int *arr1, int *arr2) {
     for(int i = 0; i < n; i++)
         for(int j = 0; j < m; j++)
             if(*(arr1 + m * i + j) != *(arr2 + m * i + j))
@@ -44,54 +47,48 @@ bool isEqual(int *arr1, int *arr2, int n, int m) {
     return true;
 }
 
-bool check(string str, int *final, int l, int n, int m) {
-    int oneCntF = 0, oneCntT = 0;
+bool check(string str) {
+    int onesCntFinal = 0, onesCntTemp = 0;
+
     for(int i = 0; i < n * m; i++)
-        if(*(final + i) == 1) oneCntF++;
-    int temp1[n][m];
+        if(*(finalWorld + i) == 1) onesCntFinal++;
+    
+    int tempWrold[n][m];
     for(int i = 0; i < n; i++)
         for(int j = 0; j < m; j++) {
-            temp1[i][j] = str[m * i + j] - 48;
-            if(temp1[i][j] == 1) oneCntT++;
+            tempWrold[i][j] = str[m * i + j] - 48;
+            if(tempWrold[i][j] == 1) onesCntTemp++;
         }
     
-    if(oneCntF - 2 > oneCntT || oneCntT > oneCntF + 3) return false;
-    
-    int temp2[n][m] = {};
-    for(int i = 0; i < l; i++) {
-        evolution(n, m, temp1[0]);
-        if(isEqual(temp1[0], temp2[0], n, m) && !isEqual(temp1[0], final, n, m)) 
-            return false;
-        for(int x = 0; x < n; x++)
-            for(int y = 0; y < m; y++)
-                temp2[x][y] = temp1[x][y];
-    }   
-    if(!isEqual(final, temp1[0], n, m))
+    if(onesCntFinal - 2 > onesCntTemp || onesCntTemp > onesCntFinal + 3) 
         return false;
+    
+    for(int i = 0; i < l; i++)
+        evolution(tempWrold[0]);
+
+    if(!isEqual(finalWorld, tempWrold[0]) )
+        return false;
+
     for(int i = 0; i < n; i++)
         for(int j = 0; j < m; j++)
-            temp1[i][j] = str[m * i + j] - 48;
-    draw(n, m, temp1[0]);
+            tempWrold[i][j] = str[m * i + j] - 48;
+    draw(tempWrold[0]);
     exit(0);
 }
 
-void printAllKLengthRec(char set[], string prefix, int n, int k, int m, int l, int nn, int *final) {
+void printAllKLengthRec(char set[], string prefix, int k) {
     if (k == 0) { 
-        check(prefix, final, l, nn, m);
+        check(prefix);
         return;
     }
-    for (int i = 0; i < n; i++) { 
+    for (int i = 0; i < 2; i++) { 
         string newPrefix; 
         newPrefix = prefix + set[i]; 
-        printAllKLengthRec(set, newPrefix, n, k - 1, m, l, nn, final); 
+        printAllKLengthRec(set, newPrefix, k - 1); 
     } 
 }
 
-
-
-
 int main() {
-	int n, m, l;
     cin >> n >> m >> l;
     string str = "";
     for(int i = 0; i < n; i++) {
@@ -109,8 +106,13 @@ int main() {
     for(int i = 0; i < n; i++)
         for(int j = 0; j < m; j++)
             final[i][j] = str[m * i + j] - 48;
+    finalWorld = final[0];
+
+
+
+
     char set[] = {'0', '1'};
-    printAllKLengthRec(set, "", 2, n * m, m, l, n, final[0]);
+    printAllKLengthRec(set, "", n * m);
     cout << "impossible" << endl;
 	return 0;
 }
