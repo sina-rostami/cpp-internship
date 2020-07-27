@@ -11,21 +11,29 @@ void StrToArrCpy(string str, int *arr) {
 			* (arr + i * m + j) = str[m * i + j] - 48;
 }
 
+// counts the neighbours of a element in the world
+int neighbourCnt(int *world, int i, int j) {
+    int lives = 0;
+    for (int it = i - 1; it <= i + 1; it++)
+        for (int jt = j - 1; jt <= j + 1; jt++)
+            if (* (world + (m * ((it + n) % n)) + ((jt + m) % m ))) 
+                lives++;
+
+    if(* (world + i * m + j)) 
+        lives--;
+    return lives;
+}
+
 void evolution(int *world) {
 	int newWorld[n][m];
     int lives;
 	for (int i = 0; i < n; i++)
 		for (int j = 0; j < m; j++) {
-			lives = 0;
-			for (int i_neighbor = i - 1; i_neighbor <= i + 1; i_neighbor++)
-				for (int j_neighbor = j - 1; j_neighbor <= j + 1; j_neighbor++)
-                    if (* (world + (m * ((i_neighbor + n) % n)) + ((j_neighbor + m) % m ))) 
-						lives++;
+			lives = neighbourCnt(world, i, j);
 
-			if (* (world + i * m + j)) {
-                lives--; 
+			if (* (world + i * m + j))
                 newWorld[i][j] = (lives == 3 || lives == 2);
-            } else
+            else
                 newWorld[i][j] = (lives == 3);
 		}
     std::copy(&newWorld[0][0], &newWorld[0][0] + m*n, world);	
@@ -54,7 +62,6 @@ bool check(string str) {
     int onesCntFinal = 0, onesCntTemp = 0;
     int tempWrold[n][m];
     StrToArrCpy(str, tempWrold[0]);
-
     for(int i = 0; i < n * m; i++) {
         if(*(finalWorld + i) == 1) onesCntFinal++;
         if(*(*tempWrold + i) == 1) onesCntTemp++;
@@ -70,7 +77,6 @@ bool check(string str) {
         return false;
 
     StrToArrCpy(str, tempWrold[0]);
-
     drawWorld(tempWrold[0]);
     exit(0);
 }
@@ -92,8 +98,8 @@ int main() {
     cin >> n >> m >> l;
     int final[n][m];
     string str = "";
+    string temp;
     for(int i = 0; i < n; i++) {
-        string temp;
         cin >> temp;
         str += temp;
     }
@@ -102,6 +108,7 @@ int main() {
     for(int i = 0; i < n; i++)
         for(int j = 0; j < m; j++)
             final[i][j] = str[m * i + j] == '*' ? 1 : 0;
+
     finalWorld = final[0];
 
     makePermutatios("", n * m);
