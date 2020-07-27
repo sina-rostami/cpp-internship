@@ -18,9 +18,10 @@ int neighbourCnt(int *world, int i, int j) {
     for (int jt = j - 1; jt <= j + 1; jt++)
       if (*(world + (m * ((it + n) % n)) + ((jt + m) % m)))
         lives++;
-
+        
   if (*(world + i * m + j))
     lives--;
+
   return lives;
 }
 
@@ -110,7 +111,6 @@ int main() {
   for (int i = 0; i < n; i++)
     for (int j = 0; j < m; j++)
       final[i][j] = str[m * i + j] == '*' ? 1 : 0;
-
   finalWorld = final[0];
 
   makePermutatios("", n * m);
