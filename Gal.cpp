@@ -18,10 +18,9 @@ int neighbourCnt(int *world, int i, int j) {
     for (int jt = j - 1; jt <= j + 1; jt++)
       if (*(world + (m * ((it + n) % n)) + ((jt + m) % m)))
         lives++;
-        
+
   if (*(world + i * m + j))
     lives--;
-
   return lives;
 }
 
@@ -69,16 +68,12 @@ bool check(string str) {
     if (*(*tempWrold + i) == 1)
       onesCntTemp++;
   }
-
   if (onesCntFinal - 2 > onesCntTemp || onesCntTemp > onesCntFinal + 3)
     return false;
-
   for (int i = 0; i < l; i++)
     evolution(tempWrold[0]);
-
   if (!areEqual(finalWorld, tempWrold[0]))
     return false;
-
   StrToArrCpy(str, tempWrold[0]);
   drawWorld(tempWrold[0]);
   exit(0);
@@ -106,13 +101,11 @@ int main() {
     cin >> temp;
     str += temp;
   }
-
   // store input World to an array and make finalWorld point to it.
   for (int i = 0; i < n; i++)
     for (int j = 0; j < m; j++)
       final[i][j] = str[m * i + j] == '*' ? 1 : 0;
   finalWorld = final[0];
-
   makePermutatios("", n * m);
   cout << "impossible" << endl;
   return 0;
