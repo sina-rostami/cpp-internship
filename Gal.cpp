@@ -5,12 +5,6 @@ int n, m, l;
 int *finalWorld;
 char set[] = {'0', '1'};
 
-void arrCpy(int *src, int *dst) {
-    for (int i = 0; i < n; i++)
-		for (int j = 0; j < m; j++)
-			* (dst + i * m + j) = * (src + i * m + j);
-}
-
 void StrToArrCpy(string str, int *arr) {
     for (int i = 0; i < n; i++)
 		for (int j = 0; j < m; j++)
@@ -34,7 +28,7 @@ void evolution(int *world) {
             } else
                 newWorld[i][j] = (lives == 3);
 		}
-	arrCpy(newWorld[0], world);
+    std::copy(&newWorld[0][0], &newWorld[0][0] + m*n, world);	
 }
 
 void drawWorld(int *world) {
