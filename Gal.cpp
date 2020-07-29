@@ -6,13 +6,10 @@ class ReverseWorld {
 private:
   int n, m, l;
   int *finalWorld;
+
 public:
-  ReverseWorld(int n1, int m1, int l1, int *final) {
-    n = n1;
-    m = m1;
-    l = l1;
-    finalWorld = final;
-  }
+  ReverseWorld(int n1, int m1, int l1, int *finalWorld1)
+      : n(n1), m(m1), l(l1), finalWorld(finalWorld1) {}
   bool check(string str);
   void makePermutatios(string prefix, int k);
   int neighbourCnt(int *world, int i, int j);
@@ -20,7 +17,7 @@ public:
   void evolution(int *world);
   void drawWorld(int *world);
   bool areEqual(int *arr1, int *arr2);
-  void solve() { 
+  void solve() {
     makePermutatios("", m * n);
     cout << "impossible" << endl;
   };
@@ -114,7 +111,7 @@ void ReverseWorld::makePermutatios(string prefix, int k) {
   }
 }
 
-int main() {  
+int main() {
   int n, m, l;
   cin >> n >> m >> l;
   int final[n][m];
