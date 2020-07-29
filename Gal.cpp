@@ -66,14 +66,6 @@ void ReverseWorld::drawWorld(int *world) {
   printf("\n");
 }
 
-bool ReverseWorld::areEqual(int *arr1, int *arr2) {
-  for (int i = 0; i < n; i++)
-    for (int j = 0; j < m; j++)
-      if (*(arr1 + m * i + j) != *(arr2 + m * i + j))
-        return false;
-  return true;
-}
-
 // convert str to an array (tempWorld), call evolution on it l time and
 // check if it equals to finalarray or not
 bool ReverseWorld::check(string str) {
@@ -91,7 +83,7 @@ bool ReverseWorld::check(string str) {
   for (int i = 0; i < l; i++)
     evolution(tempWrold[0]);
 
-  if (!areEqual(finalWorld, tempWrold[0]))
+  if (!std::equal(finalWorld, finalWorld + m * n, tempWrold[0]))
     return false;
   StrToArrCpy(str, tempWrold[0]);
   drawWorld(tempWrold[0]);
