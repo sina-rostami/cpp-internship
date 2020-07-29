@@ -1,18 +1,36 @@
 #include <cstdio>
 #include <iostream>
 using namespace std;
-int n, m, l;
-int *finalWorld;
-char set[] = {'0', '1'};
 
-void StrToArrCpy(string str, int *arr) {
+class ReverseWorld {
+public:
+  int n, m, l;
+  int *finalWorld;
+  void setN(int num) { n = num; }
+  void setM(int num) { m = num; }
+  void setL(int num) { l = num; }
+  void setFinalWorld(int *final) { finalWorld = final; }
+  bool check(string str);
+  void makePermutatios(string prefix, int k);
+  int neighbourCnt(int *world, int i, int j);
+  void StrToArrCpy(string str, int *arr);
+  void evolution(int *world);
+  void drawWorld(int *world);
+  bool areEqual(int *arr1, int *arr2);
+  void solve() { 
+    makePermutatios("", m * n);
+    cout << "impossible" << endl;
+  };
+};
+
+void ReverseWorld::StrToArrCpy(string str, int *arr) {
   for (int i = 0; i < n; i++)
     for (int j = 0; j < m; j++)
       *(arr + i * m + j) = str[m * i + j] - 48;
 }
 
 // counts the neighbours of a element in the world
-int neighbourCnt(int *world, int i, int j) {
+int ReverseWorld::neighbourCnt(int *world, int i, int j) {
   int lives = 0;
   for (int it = i - 1; it <= i + 1; it++)
     for (int jt = j - 1; jt <= j + 1; jt++)
@@ -24,7 +42,7 @@ int neighbourCnt(int *world, int i, int j) {
   return lives;
 }
 
-void evolution(int *world) {
+void ReverseWorld::evolution(int *world) {
   int newWorld[n][m];
   int lives;
   for (int i = 0; i < n; i++)
@@ -39,7 +57,7 @@ void evolution(int *world) {
   std::copy(&newWorld[0][0], &newWorld[0][0] + m * n, world);
 }
 
-void drawWorld(int *world) {
+void ReverseWorld::drawWorld(int *world) {
   for (int i = 0; i < n; i++) {
     for (int j = 0; j < m; j++)
       cout << (*(world + i * m + j) ? "*" : ".");
@@ -48,7 +66,7 @@ void drawWorld(int *world) {
   printf("\n");
 }
 
-bool areEqual(int *arr1, int *arr2) {
+bool ReverseWorld::areEqual(int *arr1, int *arr2) {
   for (int i = 0; i < n; i++)
     for (int j = 0; j < m; j++)
       if (*(arr1 + m * i + j) != *(arr2 + m * i + j))
@@ -58,7 +76,7 @@ bool areEqual(int *arr1, int *arr2) {
 
 // convert str to an array (tempWorld), call evolution on it l time and
 // check if it equals to finalarray or not
-bool check(string str) {
+bool ReverseWorld::check(string str) {
   int onesCntFinal = 0, onesCntTemp = 0;
   int tempWrold[n][m];
   StrToArrCpy(str, tempWrold[0]);
@@ -72,6 +90,7 @@ bool check(string str) {
     return false;
   for (int i = 0; i < l; i++)
     evolution(tempWrold[0]);
+
   if (!areEqual(finalWorld, tempWrold[0]))
     return false;
   StrToArrCpy(str, tempWrold[0]);
@@ -80,19 +99,22 @@ bool check(string str) {
 }
 
 // make every permutation of that world and pass it to the check function
-void makePermutatios(string prefix, int k) {
+void ReverseWorld::makePermutatios(string prefix, int k) {
   if (k == 0) {
     check(prefix);
     return;
   }
   for (int i = 0; i < 2; i++) {
     string newPrefix;
-    newPrefix = prefix + set[i];
+    newPrefix = prefix + (i == 0 ? '0' : '1');
     makePermutatios(newPrefix, k - 1);
   }
 }
 
 int main() {
+  ReverseWorld reverseWorld;
+  
+  int n, m, l;
   cin >> n >> m >> l;
   int final[n][m];
   string str = "";
@@ -105,8 +127,11 @@ int main() {
   for (int i = 0; i < n; i++)
     for (int j = 0; j < m; j++)
       final[i][j] = str[m * i + j] == '*' ? 1 : 0;
-  finalWorld = final[0];
-  makePermutatios("", n * m);
-  cout << "impossible" << endl;
+
+  reverseWorld.setN(n);
+  reverseWorld.setM(m);
+  reverseWorld.setL(l);
+  reverseWorld.setFinalWorld(final[0]);
+  reverseWorld.solve();
   return 0;
 }
