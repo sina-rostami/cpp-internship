@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <iostream>
+#include <algorithm>
 using namespace std;
 
 class ReverseWorld {
@@ -13,21 +14,14 @@ public:
   bool check(string str);
   void makePermutatios(string prefix, int k);
   int neighbourCnt(int *world, int i, int j);
-  void StrToArrCpy(string str, int *arr);
   void evolution(int *world);
   void drawWorld(int *world);
-  bool areEqual(int *arr1, int *arr2);
   void solve() {
     makePermutatios("", m * n);
     cout << "impossible" << endl;
   };
 };
 
-void ReverseWorld::StrToArrCpy(string str, int *arr) {
-  for (int i = 0; i < n; i++)
-    for (int j = 0; j < m; j++)
-      *(arr + i * m + j) = str[m * i + j] - 48;
-}
 
 // counts the neighbours of a element in the world
 int ReverseWorld::neighbourCnt(int *world, int i, int j) {
@@ -54,6 +48,7 @@ void ReverseWorld::evolution(int *world) {
       else
         newWorld[i][j] = (lives == 3);
     }
+
   std::copy(&newWorld[0][0], &newWorld[0][0] + m * n, world);
 }
 
@@ -71,7 +66,11 @@ void ReverseWorld::drawWorld(int *world) {
 bool ReverseWorld::check(string str) {
   int onesCntFinal = 0, onesCntTemp = 0;
   int tempWrold[n][m];
-  StrToArrCpy(str, tempWrold[0]);
+
+  std::copy(str.begin(), str.end(), tempWrold[0]);
+  std::transform(tempWrold[0], tempWrold[0] + m * n, tempWrold[0],
+                 [](int a) -> int { return a - 48; });
+
   for (int i = 0; i < n * m; i++) {
     if (*(finalWorld + i) == 1)
       onesCntFinal++;
@@ -85,7 +84,11 @@ bool ReverseWorld::check(string str) {
 
   if (!std::equal(finalWorld, finalWorld + m * n, tempWrold[0]))
     return false;
-  StrToArrCpy(str, tempWrold[0]);
+
+  std::copy(str.begin(), str.end(), tempWrold[0]);
+  std::transform(tempWrold[0], tempWrold[0] + m * n, tempWrold[0],
+                 [](int a) -> int { return a - 48; });
+                 
   drawWorld(tempWrold[0]);
   exit(0);
 }
