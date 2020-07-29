@@ -3,13 +3,16 @@
 using namespace std;
 
 class ReverseWorld {
-public:
+private:
   int n, m, l;
   int *finalWorld;
-  void setN(int num) { n = num; }
-  void setM(int num) { m = num; }
-  void setL(int num) { l = num; }
-  void setFinalWorld(int *final) { finalWorld = final; }
+public:
+  ReverseWorld(int n1, int m1, int l1, int *final) {
+    n = n1;
+    m = m1;
+    l = l1;
+    finalWorld = final;
+  }
   bool check(string str);
   void makePermutatios(string prefix, int k);
   int neighbourCnt(int *world, int i, int j);
@@ -111,9 +114,7 @@ void ReverseWorld::makePermutatios(string prefix, int k) {
   }
 }
 
-int main() {
-  ReverseWorld reverseWorld;
-  
+int main() {  
   int n, m, l;
   cin >> n >> m >> l;
   int final[n][m];
@@ -128,10 +129,7 @@ int main() {
     for (int j = 0; j < m; j++)
       final[i][j] = str[m * i + j] == '*' ? 1 : 0;
 
-  reverseWorld.setN(n);
-  reverseWorld.setM(m);
-  reverseWorld.setL(l);
-  reverseWorld.setFinalWorld(final[0]);
+  ReverseWorld reverseWorld(n, m, l, final[0]);
   reverseWorld.solve();
   return 0;
 }
