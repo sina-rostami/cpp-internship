@@ -16,23 +16,17 @@ public:
   void makePermutatios(string prefix, int k);
   int neighbourCnt(int *world, int i, int j);
   void evolution(int *world);
-  void drawWorld(int *world);
-  int get_n() { return n; }
-  int get_m() { return m; }
-  int *get_first_world() { return firstWorld; }
   void solve() {
     makePermutatios("", m * n);
     cout << "impossible" << endl;
   };
+  friend ostream &operator<<(ostream &out, ReverseWorld &r);
 };
 
 ostream &operator<<(ostream &out, ReverseWorld &r) {
-  int n = r.get_n();
-  int m = r.get_m();
-  int *world = r.get_first_world();
-  for (int i = 0; i < n; i++) {
-    for (int j = 0; j < m; j++)
-      out << (*(world + i * m + j) ? "*" : ".");
+  for (int i = 0; i < r.n; i++) {
+    for (int j = 0; j < r.m; j++)
+      out << (*(r.firstWorld + i * r.m + j) ? "*" : ".");
     out << endl;
   }
   out << endl;
