@@ -5,28 +5,30 @@ using namespace std;
 
 class ReverseWorld {
 private:
-  int n, m, l;
+  std::size_t height, width;
+  int l;
   bool *firstWorld;
   bool *finalWorld;
 
 public:
-  ReverseWorld(int n1, int m1, int l1, bool *finalWorld1)
-      : n(n1), m(m1), l(l1), finalWorld(finalWorld1) {}
+  ReverseWorld(std::size_t height1, std::size_t width1, int l1,
+               bool *finalWorld1)
+      : height(height1), width(width1), l(l1), finalWorld(finalWorld1) {}
   bool check(string str);
   void makePermutatios(string prefix, int k);
   int neighbourCnt(bool *world, int i, int j);
   void evolution(bool *world);
   void solve() {
-    makePermutatios("", m * n);
+    makePermutatios("", width * height);
     cout << "impossible" << endl;
   };
   friend ostream &operator<<(ostream &out, ReverseWorld &r);
 };
 
 ostream &operator<<(ostream &out, ReverseWorld &r) {
-  for (int i = 0; i < r.n; i++) {
-    for (int j = 0; j < r.m; j++)
-      out << (*(r.firstWorld + i * r.m + j) ? "*" : ".");
+  for (std::size_t i = 0; i < r.height; i++) {
+    for (std::size_t j = 0; j < r.width; j++)
+      out << (*(r.firstWorld + i * r.width + j) ? "*" : ".");
     out << endl;
   }
   out << endl;
@@ -36,42 +38,43 @@ ostream &operator<<(ostream &out, ReverseWorld &r) {
 // counts the neighbours of a element in the world
 int ReverseWorld::neighbourCnt(bool *world, int i, int j) {
   int lives = 0;
-  for (int it = i - 1; it <= i + 1; it++)
-    for (int jt = j - 1; jt <= j + 1; jt++)
-      if (*(world + (m * ((it + n) % n)) + ((jt + m) % m)))
+  for (int it = i - 1; it <= i + 1; ++it)
+    for (int jt = j - 1; jt <= j + 1; ++jt)
+      if (*(world + (width * ((it + height) % height)) +
+            ((jt + width) % width)))
         lives++;
 
-  if (*(world + i * m + j))
+  if (*(world + i * width + j))
     lives--;
   return lives;
 }
 
 void ReverseWorld::evolution(bool *world) {
-  bool newWorld[n][m];
+  bool newWorld[height * width];
   int lives;
-  for (int i = 0; i < n; i++)
-    for (int j = 0; j < m; j++) {
+  for (std::size_t i = 0; i != height; ++i)
+    for (std::size_t j = 0; j != width; ++j) {
       lives = neighbourCnt(world, i, j);
 
-      if (*(world + i * m + j))
-        newWorld[i][j] = (lives == 3 || lives == 2);
+      if (*(world + i * width + j))
+        *(newWorld + i * width + j) = (lives == 3 || lives == 2);
       else
-        newWorld[i][j] = (lives == 3);
+        *(newWorld + i * width + j) = (lives == 3);
     }
-
-  std::copy(&newWorld[0][0], &newWorld[0][0] + m * n, world);
+  std::copy(newWorld, newWorld + width * height, world);
 }
 
 // convert str to an array (tempWorld), call evolution on it l time and
 // check if it equals to finalarray or not
 bool ReverseWorld::check(string str) {
   int onesCntFinal = 0, onesCntTemp = 0;
-  bool tempWrold[n * m];
-  for (size_t i = 0; i != str.size(); ++i) {
+  bool tempWrold[height * width];
+
+  for (std::size_t i = 0; i != str.size(); ++i) {
     tempWrold[i] = str[i] - 48;
   }
 
-  for (int i = 0; i < n * m; i++) {
+  for (std::size_t i = 0; i < height * width; i++) {
     if (*(finalWorld + i) == 1)
       onesCntFinal++;
     if (*(tempWrold + i) == 1)
@@ -82,7 +85,7 @@ bool ReverseWorld::check(string str) {
   for (int i = 0; i < l; i++)
     evolution(tempWrold);
 
-  if (!std::equal(finalWorld, finalWorld + m * n, tempWrold))
+  if (!std::equal(finalWorld, finalWorld + width * height, tempWrold))
     return false;
 
   for (size_t i = 0; i != str.size(); ++i) {
@@ -107,9 +110,10 @@ void ReverseWorld::makePermutatios(string prefix, int k) {
 }
 
 int main() {
-  int n, m, l;
-  cin >> n >> m >> l;
-  bool final[n][m];
+  std::size_t n, width;
+  int l;
+  cin >> n >> width >> l;
+  bool final[n][width];
   string str = "";
   string temp;
   for (int i = 0; i < n; i++) {
@@ -117,11 +121,11 @@ int main() {
     str += temp;
   }
   // store input World to an array and make finalWorld point to it.
-  for (int i = 0; i < n; i++)
-    for (int j = 0; j < m; j++)
-      final[i][j] = str[m * i + j] == '*' ? true : false;
+  for (std::size_t i = 0; i < n; i++)
+    for (std::size_t j = 0; j < width; j++)
+      final[i][j] = str[width * i + j] == '*' ? true : false;
 
-  ReverseWorld reverseWorld(n, m, l, final[0]);
+  ReverseWorld reverseWorld(n, width, l, final[0]);
   reverseWorld.solve();
   return 0;
 }
