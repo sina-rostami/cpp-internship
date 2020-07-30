@@ -5,18 +5,17 @@ using namespace std;
 
 class ReverseWorld {
 private:
-  std::size_t height, width;
-  int l;
-  bool *firstWorld;
-  bool *finalWorld;
+  std::size_t height, width, evolution_num;
+  bool *firstWorld, *finalWorld;
 
 public:
-  ReverseWorld(std::size_t height1, std::size_t width1, int l1,
+  ReverseWorld(std::size_t height1, std::size_t width1, int evolution_num1,
                bool *finalWorld1)
-      : height(height1), width(width1), l(l1), finalWorld(finalWorld1) {}
+      : height(height1), width(width1), evolution_num(evolution_num1),
+        finalWorld(finalWorld1) {}
   bool check(string str);
   void makePermutatios(string prefix, int k);
-  int neighbourCnt(bool *world, int i, int j);
+  std::size_t neighbourCnt(bool *world, int i, int j);
   void evolution(bool *world);
   void solve() {
     makePermutatios("", width * height);
@@ -36,8 +35,8 @@ ostream &operator<<(ostream &out, ReverseWorld &r) {
 }
 
 // counts the neighbours of a element in the world
-int ReverseWorld::neighbourCnt(bool *world, int i, int j) {
-  int lives = 0;
+std::size_t ReverseWorld::neighbourCnt(bool *world, int i, int j) {
+  std::size_t lives = 0;
   for (int it = i - 1; it <= i + 1; ++it)
     for (int jt = j - 1; jt <= j + 1; ++jt)
       if (*(world + (width * ((it + height) % height)) +
@@ -64,15 +63,19 @@ void ReverseWorld::evolution(bool *world) {
   std::copy(newWorld, newWorld + width * height, world);
 }
 
+void strArrCpy(string str, bool *arr) {
+  for (std::size_t i = 0; i != str.size(); ++i) {
+    arr[i] = str[i] - 48;
+  }
+}
 // convert str to an array (tempWorld), call evolution on it l time and
 // check if it equals to finalarray or not
 bool ReverseWorld::check(string str) {
-  int onesCntFinal = 0, onesCntTemp = 0;
-  bool tempWrold[height * width];
+  std::size_t onesCntFinal = 0, onesCntTemp = 0;
 
-  for (std::size_t i = 0; i != str.size(); ++i) {
-    tempWrold[i] = str[i] - 48;
-  }
+  // bool tempWrold[height * width];
+  bool *tempWrold = new bool[height * width];
+  strArrCpy(str, tempWrold);
 
   for (std::size_t i = 0; i < height * width; i++) {
     if (*(finalWorld + i) == 1)
@@ -80,19 +83,22 @@ bool ReverseWorld::check(string str) {
     if (*(tempWrold + i) == 1)
       onesCntTemp++;
   }
-  if (onesCntFinal - 2 > onesCntTemp || onesCntTemp > onesCntFinal + 3)
+  if (onesCntFinal - 2 > onesCntTemp || onesCntTemp > onesCntFinal + 3) {
+    delete[] tempWrold;
     return false;
-  for (int i = 0; i < l; i++)
+  }
+  for (std::size_t i = 0; i < evolution_num; i++)
     evolution(tempWrold);
 
-  if (!std::equal(finalWorld, finalWorld + width * height, tempWrold))
+  if (!std::equal(finalWorld, finalWorld + width * height, tempWrold)) {
+    delete[] tempWrold;
     return false;
-
-  for (size_t i = 0; i != str.size(); ++i) {
-    tempWrold[i] = str[i] - 48;
   }
+
+  strArrCpy(str, tempWrold);
   firstWorld = tempWrold;
   cout << *this;
+  delete[] tempWrold;
   exit(0);
 }
 
@@ -102,7 +108,7 @@ void ReverseWorld::makePermutatios(string prefix, int k) {
     check(prefix);
     return;
   }
-  for (int i = 0; i < 2; i++) {
+  for (std::size_t i = 0; i < 2; i++) {
     string newPrefix;
     newPrefix = prefix + (i == 0 ? '0' : '1');
     makePermutatios(newPrefix, k - 1);
@@ -110,13 +116,12 @@ void ReverseWorld::makePermutatios(string prefix, int k) {
 }
 
 int main() {
-  std::size_t n, width;
-  int l;
-  cin >> n >> width >> l;
+  std::size_t n, width, evolution_num;
+  cin >> n >> width >> evolution_num;
   bool final[n][width];
   string str = "";
   string temp;
-  for (int i = 0; i < n; i++) {
+  for (std::size_t i = 0; i < n; i++) {
     cin >> temp;
     str += temp;
   }
@@ -125,7 +130,7 @@ int main() {
     for (std::size_t j = 0; j < width; j++)
       final[i][j] = str[width * i + j] == '*' ? true : false;
 
-  ReverseWorld reverseWorld(n, width, l, final[0]);
+  ReverseWorld reverseWorld(n, width, evolution_num, final[0]);
   reverseWorld.solve();
   return 0;
 }
