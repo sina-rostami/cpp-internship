@@ -1,11 +1,12 @@
+#include <algorithm>
 #include <cstdio>
 #include <iostream>
-#include <algorithm>
 using namespace std;
 
 class ReverseWorld {
 private:
   int n, m, l;
+  int *firstWorld;
   int *finalWorld;
 
 public:
@@ -16,12 +17,27 @@ public:
   int neighbourCnt(int *world, int i, int j);
   void evolution(int *world);
   void drawWorld(int *world);
+  int get_n() { return n; }
+  int get_m() { return m; }
+  int *get_first_world() { return firstWorld; }
   void solve() {
     makePermutatios("", m * n);
     cout << "impossible" << endl;
   };
 };
 
+ostream &operator<<(ostream &out, ReverseWorld &r) {
+  int n = r.get_n();
+  int m = r.get_m();
+  int *world = r.get_first_world();
+  for (int i = 0; i < n; i++) {
+    for (int j = 0; j < m; j++)
+      out << (*(world + i * m + j) ? "*" : ".");
+    out << endl;
+  }
+  out << endl;
+  return out;
+}
 
 // counts the neighbours of a element in the world
 int ReverseWorld::neighbourCnt(int *world, int i, int j) {
@@ -52,15 +68,6 @@ void ReverseWorld::evolution(int *world) {
   std::copy(&newWorld[0][0], &newWorld[0][0] + m * n, world);
 }
 
-void ReverseWorld::drawWorld(int *world) {
-  for (int i = 0; i < n; i++) {
-    for (int j = 0; j < m; j++)
-      cout << (*(world + i * m + j) ? "*" : ".");
-    printf("\n");
-  }
-  printf("\n");
-}
-
 // convert str to an array (tempWorld), call evolution on it l time and
 // check if it equals to finalarray or not
 bool ReverseWorld::check(string str) {
@@ -88,8 +95,8 @@ bool ReverseWorld::check(string str) {
   std::copy(str.begin(), str.end(), tempWrold[0]);
   std::transform(tempWrold[0], tempWrold[0] + m * n, tempWrold[0],
                  [](int a) -> int { return a - 48; });
-                 
-  drawWorld(tempWrold[0]);
+  firstWorld = tempWrold[0];
+  cout << *this;
   exit(0);
 }
 
