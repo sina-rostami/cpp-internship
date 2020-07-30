@@ -35,15 +35,15 @@ ostream &operator<<(ostream &out, ReverseWorld &r) {
 }
 
 // counts the neighbours of a element in the world
-std::size_t ReverseWorld::neighbourCnt(bool *world, int i, int j) {
+std::size_t ReverseWorld::neighbourCnt(bool *world, int height_index, int width_index) {
   std::size_t lives = 0;
-  for (int it = i - 1; it <= i + 1; ++it)
-    for (int jt = j - 1; jt <= j + 1; ++jt)
+  for (int it = height_index - 1; it <= height_index + 1; ++it)
+    for (int jt = width_index - 1; jt <= width_index + 1; ++jt)
       if (*(world + (width * ((it + height) % height)) +
             ((jt + width) % width)))
         lives++;
 
-  if (*(world + i * width + j))
+  if (*(world + height_index * width + width_index))
     lives--;
   return lives;
 }
@@ -68,12 +68,12 @@ void strArrCpy(string str, bool *arr) {
     arr[i] = str[i] - 48;
   }
 }
+
 // convert str to an array (tempWorld), call evolution on it l time and
 // check if it equals to finalarray or not
 bool ReverseWorld::check(string str) {
   std::size_t onesCntFinal = 0, onesCntTemp = 0;
 
-  // bool tempWrold[height * width];
   bool *tempWrold = new bool[height * width];
   strArrCpy(str, tempWrold);
 
@@ -116,21 +116,21 @@ void ReverseWorld::makePermutatios(string prefix, int k) {
 }
 
 int main() {
-  std::size_t n, width, evolution_num;
-  cin >> n >> width >> evolution_num;
-  bool final[n][width];
+  std::size_t height, width, evolution_num;
+  cin >> height >> width >> evolution_num;
+  bool finalWorld[height][width];
   string str = "";
   string temp;
-  for (std::size_t i = 0; i < n; i++) {
+  for (std::size_t i = 0; i < height; i++) {
     cin >> temp;
     str += temp;
   }
   // store input World to an array and make finalWorld point to it.
-  for (std::size_t i = 0; i < n; i++)
+  for (std::size_t i = 0; i < height; i++)
     for (std::size_t j = 0; j < width; j++)
-      final[i][j] = str[width * i + j] == '*' ? true : false;
+      finalWorld[i][j] = str[width * i + j] == '*' ? true : false;
 
-  ReverseWorld reverseWorld(n, width, evolution_num, final[0]);
+  ReverseWorld reverseWorld(height, width, evolution_num, finalWorld[0]);
   reverseWorld.solve();
   return 0;
 }
