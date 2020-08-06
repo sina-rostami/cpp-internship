@@ -12,7 +12,7 @@ public:
   ReverseWorld(std::size_t height1, std::size_t width1, int evolution_num1,
                bool *finalWorld1)
       : height(height1), width(width1), evolution_num(evolution_num1),
-        finalWorld(finalWorld1) {}
+        finalWorld(finalWorld1){};
   bool check(string str);
   void makePermutatios(string prefix, int k);
   std::size_t neighbourCnt(bool *world, int i, int j);
@@ -35,7 +35,8 @@ ostream &operator<<(ostream &out, ReverseWorld &r) {
 }
 
 // counts the neighbours of a element in the world
-std::size_t ReverseWorld::neighbourCnt(bool *world, int height_index, int width_index) {
+std::size_t ReverseWorld::neighbourCnt(bool *world, int height_index,
+                                       int width_index) {
   std::size_t lives = 0;
   for (int it = height_index - 1; it <= height_index + 1; ++it)
     for (int jt = width_index - 1; jt <= width_index + 1; ++jt)
