@@ -7,31 +7,29 @@ private:
   T **arr_ptr;
 
 public:
-  Array2D(std::size_t height1, std::size_t width1);
-  void print();
+  Array2D(std::size_t height1, std::size_t width1) {
+    height = height1;
+    width = width1;
+    arr_ptr = new T *[height];
+    for (std::size_t i = 0; i < height; ++i) {
+      arr_ptr[i] = new T[width];
+    }
+  };
+
+  void print() {
+    std::cout << std::endl;
+    for (std::size_t i = 0; i < height; ++i) {
+      for (std::size_t j = 0; j < width; ++j)
+        std::cout << *(*(arr_ptr + i) + j) << ", ";
+      std::cout << std::endl;
+    }
+  };
+
   T &operator()(std::size_t hei, std::size_t wid) {
     if (hei >= height || wid >= width) {
       throw out_of_bounds_Exception{};
     }
     return *(*(arr_ptr + hei) + wid);
   };
+
 };
-
-template <typename T>
-Array2D<T>::Array2D(std::size_t height1, std::size_t width1) {
-  height = height1;
-  width = width1;
-  arr_ptr = new T *[height];
-  for (std::size_t i = 0; i < height; ++i) {
-    arr_ptr[i] = new T[width];
-  }
-}
-
-template <typename T> void Array2D<T>::print() {
-  std::cout << std::endl;
-  for (std::size_t i = 0; i < height; ++i) {
-    for (std::size_t j = 0; j < width; ++j)
-      std::cout << *(*(arr_ptr + i) + j) << ", ";
-    std::cout << std::endl;
-  }
-}
