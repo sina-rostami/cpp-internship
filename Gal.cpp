@@ -1,5 +1,5 @@
+#include "TwoDimentioalArray.h"
 #include <algorithm>
-#include <cstdio>
 #include <iostream>
 using namespace std;
 
@@ -38,6 +38,7 @@ ostream &operator<<(ostream &out, ReverseWorld &r) {
 std::size_t ReverseWorld::neighbourCnt(bool *world, int height_index,
                                        int width_index) {
   std::size_t lives = 0;
+
   for (int it = height_index - 1; it <= height_index + 1; ++it)
     for (int jt = width_index - 1; jt <= width_index + 1; ++jt)
       if (*(world + (width * ((it + height) % height)) +
@@ -52,6 +53,7 @@ std::size_t ReverseWorld::neighbourCnt(bool *world, int height_index,
 void ReverseWorld::evolution(bool *world) {
   bool newWorld[height * width];
   int lives;
+
   for (std::size_t i = 0; i != height; ++i)
     for (std::size_t j = 0; j != width; ++j) {
       lives = neighbourCnt(world, i, j);
@@ -74,32 +76,28 @@ void strArrCpy(string str, bool *arr) {
 // check if it equals to finalarray or not
 bool ReverseWorld::check(string str) {
   std::size_t onesCntFinal = 0, onesCntTemp = 0;
-
-  bool *tempWrold = new bool[height * width];
-  strArrCpy(str, tempWrold);
+  Array2D<bool> tempWorld(height, width);
+  strArrCpy(str, tempWorld[0]);
 
   for (std::size_t i = 0; i < height * width; i++) {
     if (*(finalWorld + i) == 1)
       onesCntFinal++;
-    if (*(tempWrold + i) == 1)
+    if (*(tempWorld[0] + i) == 1)
       onesCntTemp++;
   }
   if (onesCntFinal - 2 > onesCntTemp || onesCntTemp > onesCntFinal + 3) {
-    delete[] tempWrold;
     return false;
   }
   for (std::size_t i = 0; i < evolution_num; i++)
-    evolution(tempWrold);
+    evolution(tempWorld[0]);
 
-  if (!std::equal(finalWorld, finalWorld + width * height, tempWrold)) {
-    delete[] tempWrold;
+  if (!std::equal(finalWorld, finalWorld + width * height, tempWorld[0])) {
     return false;
   }
 
-  strArrCpy(str, tempWrold);
-  firstWorld = tempWrold;
+  strArrCpy(str, tempWorld[0]);
+  firstWorld = tempWorld[0];
   cout << *this;
-  delete[] tempWrold;
   exit(0);
 }
 
@@ -118,10 +116,10 @@ void ReverseWorld::makePermutatios(string prefix, int k) {
 
 int main() {
   std::size_t height, width, evolution_num;
+  string str = "", temp;
   cin >> height >> width >> evolution_num;
   bool finalWorld[height][width];
-  string str = "";
-  string temp;
+  
   for (std::size_t i = 0; i < height; i++) {
     cin >> temp;
     str += temp;
