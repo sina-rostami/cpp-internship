@@ -80,9 +80,9 @@ bool ReverseWorld::check(string str) {
   strArrCpy(str, tempWorld[0]);
 
   for (std::size_t i = 0; i < height * width; i++) {
-    if (*(finalWorld + i) == 1)
+    if (*(finalWorld + i))
       onesCntFinal++;
-    if (*(tempWorld[0] + i) == 1)
+    if (*(tempWorld[0] + i))
       onesCntTemp++;
   }
   if (onesCntFinal - 2 > onesCntTemp || onesCntTemp > onesCntFinal + 3) {
@@ -119,7 +119,7 @@ int main() {
   string str = "", temp;
   cin >> height >> width >> evolution_num;
   bool finalWorld[height][width];
-  
+
   for (std::size_t i = 0; i < height; i++) {
     cin >> temp;
     str += temp;
