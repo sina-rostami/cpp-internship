@@ -1,5 +1,4 @@
 #include <iostream>
-class out_of_bounds_Exception {};
 
 template <typename T> class Array2D {
 private:
@@ -7,11 +6,10 @@ private:
   T *arr_ptr;
 
 public:
-  Array2D(std::size_t height1, std::size_t width1) {
-    height = height1;
-    width = width1;
-    arr_ptr = new T [height * width];
-  };
+  Array2D(std::size_t height1, std::size_t width1)
+      : height(height1), width(width1), arr_ptr(new T[height * width]){};
+
+  ~Array2D() { delete[] arr_ptr; }
 
   void print() {
     std::cout << std::endl;
@@ -22,11 +20,5 @@ public:
     }
   };
 
-  T &operator()(std::size_t hei, std::size_t wid) {
-    if (hei >= height || wid >= width) {
-      throw out_of_bounds_Exception{};
-    }
-    return *((arr_ptr + hei * height) + wid);
-  };
-
+  T *operator[](std::size_t hei) { return (arr_ptr + hei * height); };
 };
