@@ -1,20 +1,19 @@
 #include "TwoDimentioalArray.h"
 #include <iostream>
 using namespace std;
+void strArrCpy(string str, bool *arr) {
+  for (std::size_t i = 0; i != str.size(); ++i) {
+    arr[i] = str[i] - 48;
+  }
+}
 
 int main() {
   Array2D<bool> arr(3, 3);
-
-  arr.print();
   arr[0][0] = 1;
   arr[0][1] = 1;
   arr[1][0] = 1;
   arr[2][0] = 1;
-  int onesCntTemp = 0;
-  for (std::size_t i = 0; i < 9; i++) {
-    if (*(arr[0] + i) == 1)
-      onesCntTemp++;
-  }
-  cout << onesCntTemp << endl;
-  arr.print();
+  Array2D<bool> arr1(3, 3);
+  arr1 = arr;
+  arr1.print();
 }

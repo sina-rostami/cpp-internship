@@ -15,10 +15,27 @@ public:
     std::cout << std::endl;
     for (std::size_t i = 0; i < height; ++i) {
       for (std::size_t j = 0; j < width; ++j)
-        std::cout << *((arr_ptr + i * height) + j) << ", ";
+        std::cout << (this->operator[](i))[j] << ", ";
       std::cout << std::endl;
     }
   };
 
-  T *operator[](std::size_t hei) { return (arr_ptr + hei * height); };
+  bool operator==(Array2D<T> &other) {
+    if (this->width != other.width || this->height != other.height)
+      return false;
+    for (std::size_t i = 0; i < this->height; ++i) {
+      for (std::size_t j = 0; j < this->width; ++j) {
+        if ((this->operator[](i))[j] != other[i][j])
+          return false;
+      }
+    }
+    return true;
+  }
+
+  Array2D<T> &operator=(Array2D<T> &other) {
+    std::copy(other.arr_ptr, other.arr_ptr + other.height * other.width, arr_ptr);
+    return *this;
+  }
+
+  T *operator[](std::size_t hei) { return (arr_ptr + hei * width); };
 };
