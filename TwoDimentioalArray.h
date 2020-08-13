@@ -6,10 +6,20 @@ private:
   T *arr_ptr;
 
 public:
-  Array2D(std::size_t height1, std::size_t width1)
+  Array2D(){}; // default constructor
+
+  Array2D(std::size_t height1, std::size_t width1) // constructor
       : height(height1), width(width1), arr_ptr(new T[height * width]){};
 
-  ~Array2D() { delete[] arr_ptr; }
+  Array2D(const Array2D<T> &other) { // copy constructor
+    height = other.height;
+    width = other.width;
+    arr_ptr = new T[height * width];
+    for (size_t i = 0; i < height * width; ++i)
+      arr_ptr[i] = other.arr_ptr[i];
+  }
+
+  ~Array2D() { delete[] arr_ptr; } // distructor
 
   void print() {
     std::cout << std::endl;
@@ -23,17 +33,23 @@ public:
   bool operator==(Array2D<T> &other) {
     if (this->width != other.width || this->height != other.height)
       return false;
-    for (std::size_t i = 0; i < this->height; ++i) {
-      for (std::size_t j = 0; j < this->width; ++j) {
+    for (std::size_t i = 0; i < this->height; ++i)
+      for (std::size_t j = 0; j < this->width; ++j)
         if ((this->operator[](i))[j] != other[i][j])
           return false;
-      }
-    }
     return true;
   }
 
-  Array2D<T> &operator=(Array2D<T> &other) {
-    std::copy(other.arr_ptr, other.arr_ptr + other.height * other.width, arr_ptr);
+  Array2D<T> &operator=(const Array2D<T> &other) {
+    if (this == &other) // self assingment
+      return *this;
+
+    height = other.height;
+    width = other.width;
+    delete[] arr_ptr;
+    arr_ptr = new T[height * width];
+    for (size_t i = 0; i < height * width; ++i)
+      arr_ptr[i] = other.arr_ptr[i];
     return *this;
   }
 
