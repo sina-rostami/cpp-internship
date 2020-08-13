@@ -92,7 +92,7 @@ bool ReverseWorld::check(string str) {
   for (std::size_t i = 0; i < evolution_num; i++)
     evolution(tempWorld);
 
-  if (!(finalWorld == tempWorld))
+  if (finalWorld != tempWorld)
     return false;
 
   strArrCpy(str, tempWorld[0]);

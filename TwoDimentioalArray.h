@@ -25,21 +25,27 @@ public:
     std::cout << std::endl;
     for (std::size_t i = 0; i < height; ++i) {
       for (std::size_t j = 0; j < width; ++j)
-        std::cout << (this->operator[](i))[j] << ", ";
+        std::cout << arr_ptr[i * width + j] << ", ";
       std::cout << std::endl;
     }
   };
 
-  bool operator==(Array2D<T> &other) {
-    if (this->width != other.width || this->height != other.height)
+  bool operator==(const Array2D<T> &other) {
+    if (width != other.width || height != other.height)
       return false;
-    for (std::size_t i = 0; i < this->height; ++i)
-      for (std::size_t j = 0; j < this->width; ++j)
-        if ((this->operator[](i))[j] != other[i][j])
+    for (std::size_t i = 0; i < height * width; ++i)
+        if (arr_ptr[i] != other.arr_ptr[i])
           return false;
     return true;
   }
-
+  bool operator!=(const Array2D<T> &other) {
+    if (width != other.width || height != other.height)
+      return true;
+    for (std::size_t i = 0; i < height * width; ++i)
+      if (arr_ptr[i] != other.arr_ptr[i])
+        return true;
+    return false;
+  }
   Array2D<T> &operator=(const Array2D<T> &other) {
     if (this == &other) // self assingment
       return *this;
