@@ -16,7 +16,8 @@ public:
 
   bool check(string str);
   void makePermutatios(string prefix, int k);
-  std::size_t neighbourCnt(Array2D<bool> &world, int i, int j);
+  std::size_t neighbourCnt(Array2D<bool> &world, std::size_t hindex,
+                           std::size_t windex);
   void evolution(Array2D<bool> &world);
   void solve() {
     makePermutatios("", width * height);
@@ -36,13 +37,16 @@ ostream &operator<<(ostream &out, ReverseWorld &r) {
 }
 
 // counts the neighbours of a element in the world
-std::size_t ReverseWorld::neighbourCnt(Array2D<bool> &world, int height_index,
-                                       int width_index) {
+std::size_t ReverseWorld::neighbourCnt(Array2D<bool> &world,
+                                       std::size_t height_index,
+                                       std::size_t width_index) {
   std::size_t lives = 0;
 
-  for (int it = height_index - 1; it <= height_index + 1; ++it)
-    for (int jt = width_index - 1; jt <= width_index + 1; ++jt)
-      if (world[(it + height) % height][(jt + width) % width])
+  for (std::size_t it = height_index + height - 1;
+       it <= height_index + height + 1; ++it)
+    for (std::size_t jt = width_index + width - 1;
+         jt <= width_index + width + 1; ++jt)
+      if (world[it % height][jt % width])
         lives++;
 
   if (world[height_index][width_index])
