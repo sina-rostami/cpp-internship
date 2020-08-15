@@ -30,7 +30,7 @@ public:
     }
   };
 
-  bool operator==(const Array2D<T> &other) {
+  bool operator==(const Array2D<T> &other) const {
     if (width != other.width || height != other.height)
       return false;
     for (std::size_t i = 0; i < height * width; ++i)
@@ -38,7 +38,8 @@ public:
           return false;
     return true;
   }
-  bool operator!=(const Array2D<T> &other) {
+
+  bool operator!=(const Array2D<T> &other) const{
     if (width != other.width || height != other.height)
       return true;
     for (std::size_t i = 0; i < height * width; ++i)
@@ -46,6 +47,7 @@ public:
         return true;
     return false;
   }
+
   Array2D<T> &operator=(const Array2D<T> &other) {
     if (this == &other) // self assingment
       return *this;

@@ -1,4 +1,4 @@
-#include "TwoDimentioalArray.h"
+#include "2d_array.h"
 #include <algorithm>
 #include <iostream>
 using namespace std;
