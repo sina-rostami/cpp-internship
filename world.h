@@ -19,6 +19,9 @@ private:
   };
 
 public:
+  world(stdsize height1, stdsize width1, Array2D<bool> worldb)
+      : height(height1), width(width1),
+        world_board(worldb){};
   world(stdsize height1, stdsize width1)
       : height(height1), width(width1),
         world_board(Array2D<bool>(height, width)){};
