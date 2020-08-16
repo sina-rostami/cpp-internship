@@ -20,6 +20,10 @@ public:
       : height(other.height), width(other.width),
         world_board(other.world_board){};
 
+  ssize_t get_height() { return height; }
+
+  ssize_t get_width() { return width; }
+
   void evolution() {
     Array2D<bool> newWorld(height, width);
     int lives;
@@ -58,12 +62,16 @@ public:
     return *this;
   };
 
-  bool operator!=(const world &other) const {
+  bool operator==(const world &other) const {
     if (height != other.height || width != other.width ||
         world_board != other.world_board)
-      return true;
+      return false;
 
-    return false;
+    return true;
+  };
+
+  bool operator!=(const world &other) const {
+    return !operator==(other);
   };
 
   world &operator++(int) {
@@ -71,9 +79,7 @@ public:
     int max_w = width - 1;
 
     if (world_board[max_h][max_w]) {
-
       for (ssize_t i = height * width - 1; i > 0; --i) {
-
         if (!world_board[0][i]) {
           world_board[0][i] = true;
           break;
