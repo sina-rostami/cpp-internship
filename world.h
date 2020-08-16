@@ -8,29 +8,17 @@ private:
   stdsize height, width;
   Array2D<bool> world_board;
 
-  void handle_last_full() {
-    for (ssize_t i = height * width - 1; i > 0; --i) {
-      if (!world_board[0][i]) {
-        world_board[0][i] = true;
-        return;
-      }
-      world_board[0][i] = false;
-    }
-  };
-
 public:
   world(stdsize height1, stdsize width1, Array2D<bool> worldb)
-      : height(height1), width(width1),
-        world_board(worldb){};
+      : height(height1), width(width1), world_board(worldb){};
+
   world(stdsize height1, stdsize width1)
       : height(height1), width(width1),
         world_board(Array2D<bool>(height, width)){};
 
-  world(const world &other) { // copy constructor
-    height = other.height;
-    width = other.width;
-    world_board = other.world_board;
-  };
+  world(const world &other) // copy constructor
+      : height(other.height), width(other.width),
+        world_board(other.world_board){};
 
   void evolution() {
     Array2D<bool> newWorld(height, width);
@@ -66,6 +54,7 @@ public:
     height = other.height;
     width = other.width;
     world_board = other.world_board;
+
     return *this;
   };
 
@@ -73,25 +62,29 @@ public:
     if (height != other.height || width != other.width ||
         world_board != other.world_board)
       return true;
+
     return false;
   };
 
   world &operator++(int) {
     int max_h = height - 1;
     int max_w = width - 1;
+
     if (world_board[max_h][max_w]) {
-      handle_last_full();
-      return *this;
+
+      for (ssize_t i = height * width - 1; i > 0; --i) {
+
+        if (!world_board[0][i]) {
+          world_board[0][i] = true;
+          break;
+        }
+
+        world_board[0][i] = false;
+      }
     } else {
       world_board[max_h][max_w] = true;
-      return *this;
     }
-    for (ssize_t i = height * width - 1; i > 0; --i) {
-      if (world_board[0][i]) {
-        world_board[0][i - 1] = true;
-        break;
-      }
-    }
+
     return *this;
   };
 
