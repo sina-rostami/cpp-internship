@@ -8,6 +8,20 @@ private:
   stdsize height, width;
   Array2D<bool> world_board;
 
+  stdsize neighbour_counter(stdsize h_index, stdsize w_index) {
+    stdsize lives = 0;
+
+    for (stdsize it = h_index + height - 1; it <= h_index + height + 1; ++it)
+      for (stdsize jt = w_index + width - 1; jt <= w_index + width + 1; ++jt)
+        if (world_board[it % height][jt % width])
+          lives++;
+
+    if (world_board[h_index][w_index])
+      lives--;
+
+    return lives;
+  };
+
 public:
   world(const stdsize height1, const stdsize width1, const Array2D<bool> worldb)
       : height(height1), width(width1), world_board(worldb){};
@@ -34,20 +48,6 @@ public:
       }
 
     world_board = newWorld;
-  };
-
-  int neighbour_counter(stdsize h_index, stdsize w_index) {
-    stdsize lives = 0;
-
-    for (stdsize it = h_index + height - 1; it <= h_index + height + 1; ++it)
-      for (stdsize jt = w_index + width - 1; jt <= w_index + width + 1; ++jt)
-        if (world_board[it % height][jt % width])
-          lives++;
-
-    if (world_board[h_index][w_index])
-      lives--;
-
-    return lives;
   };
 
   world &operator=(const world &other) {
