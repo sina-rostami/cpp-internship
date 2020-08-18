@@ -25,7 +25,7 @@ private:
   };
 
 public:
-  world(const Array2D<bool> worldb) : world_board(worldb){};
+  world(const Array2D<bool> &worldb) : world_board(worldb){};
 
   ssize_t get_height() const { return world_board.get_height(); };
 
