@@ -59,7 +59,7 @@ public:
 
   bool operator!=(const world &other) const { return !operator==(other); };
 
-  world &operator++(int) {
+  world &next_world() {
     int max_h = world_board.get_height() - 1;
     int max_w = world_board.get_width() - 1;
 
