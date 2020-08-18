@@ -9,16 +9,16 @@ private:
   Array2D<bool> world_board;
 
 public:
-  world(stdsize height1, stdsize width1, Array2D<bool> worldb)
+  world(const stdsize height1, const stdsize width1, const Array2D<bool> worldb)
       : height(height1), width(width1), world_board(worldb){};
 
-  world(stdsize height1, stdsize width1)
+  world(const stdsize height1, const stdsize width1)
       : height(height1), width(width1),
         world_board(Array2D<bool>(height, width)){};
 
-  ssize_t get_height() { return height; }
+  ssize_t get_height() const { return height; }
 
-  ssize_t get_width() { return width; }
+  ssize_t get_width() const { return width; }
 
   void evolution() {
     Array2D<bool> newWorld(height, width);
