@@ -16,10 +16,10 @@ private:
   world first_world, final_world;
 
 public:
-  game_of_life(std::size_t ev_num, world final_world1)
+  game_of_life(const std::size_t ev_num, const world final_world1)
       : evolution_num(ev_num), final_world(final_world1),
-        first_world(
-            world(final_world1.get_height(), final_world1.get_width())){};
+        first_world(world(Array2D<bool>(final_world1.get_height(),
+                                        final_world1.get_width()))){};
 
   world do_evolutions(world temp_world) {
     for (std::size_t i = 0; i < evolution_num; i++)
@@ -61,7 +61,6 @@ int main() {
   for (std::size_t i = 0; i < height; i++)
     for (std::size_t j = 0; j < width; j++)
       final_world[i][j] = (str[width * i + j] == '*');
-
-  game_of_life gol(evolution_num, world(height, width, final_world));
+  game_of_life gol(evolution_num, world(final_world));
   gol.solve();
 }

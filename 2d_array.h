@@ -21,6 +21,10 @@ public:
 
   ~Array2D() { delete[] arr_ptr; } // distructor
 
+  ssize_t get_height() const { return height; }
+
+  ssize_t get_width() const { return width; }
+
   void print() {
     std::cout << std::endl;
     for (std::size_t i = 0; i < height; ++i) {
@@ -34,12 +38,12 @@ public:
     if (width != other.width || height != other.height)
       return false;
     for (std::size_t i = 0; i < height * width; ++i)
-        if (arr_ptr[i] != other.arr_ptr[i])
-          return false;
+      if (arr_ptr[i] != other.arr_ptr[i])
+        return false;
     return true;
   }
 
-  bool operator!=(const Array2D<T> &other) const{
+  bool operator!=(const Array2D<T> &other) const {
     if (width != other.width || height != other.height)
       return true;
     for (std::size_t i = 0; i < height * width; ++i)
