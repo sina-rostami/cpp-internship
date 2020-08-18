@@ -16,10 +16,6 @@ public:
       : height(height1), width(width1),
         world_board(Array2D<bool>(height, width)){};
 
-  world(const world &other) // copy constructor
-      : height(other.height), width(other.width),
-        world_board(other.world_board){};
-
   ssize_t get_height() { return height; }
 
   ssize_t get_width() { return width; }
