@@ -1,14 +1,8 @@
 #include "world.h"
+#include <cmath>
 using std::cin;
 using std::cout;
 using std::string;
-
-std::size_t pow(std::size_t a, std::size_t b) {
-  std::size_t result = 1;
-  for (std::size_t i = 0; i < b; ++i)
-    result *= a;
-  return result;
-}
 
 class game_of_life {
 private:
