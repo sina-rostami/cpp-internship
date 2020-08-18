@@ -1,5 +1,4 @@
 #include <iostream>
-
 template <typename T> class Array2D {
 private:
   std::size_t height, width;
@@ -15,8 +14,7 @@ public:
     height = other.height;
     width = other.width;
     arr_ptr = new T[height * width];
-    for (size_t i = 0; i < height * width; ++i)
-      arr_ptr[i] = other.arr_ptr[i];
+    std::copy(other.arr_ptr, other.arr_ptr + height * width, arr_ptr);
   }
 
   ~Array2D() { delete[] arr_ptr; } // distructor
@@ -60,8 +58,7 @@ public:
     width = other.width;
     delete[] arr_ptr;
     arr_ptr = new T[height * width];
-    for (size_t i = 0; i < height * width; ++i)
-      arr_ptr[i] = other.arr_ptr[i];
+    std::copy(other.arr_ptr, other.arr_ptr + height * width, arr_ptr);
     return *this;
   }
 
