@@ -1,5 +1,4 @@
 #include "world.h"
-#include <cmath>
 using std::cin;
 using std::cout;
 using std::string;
@@ -29,13 +28,15 @@ public:
 
     for (std::size_t i = 0; i < max_size; i++) {
       first_world.next_world();
+      
       if (do_evolutions(first_world) == final_world) {
-        first_world.print_world();
         return 1; // solving was successful !
       }
     }
     return 0; // no first world found !
   };
+
+  world get_first_world() { return first_world; }
 };
 
 int main() {
@@ -56,7 +57,9 @@ int main() {
 
   game_of_life gol(evolution_num, world(final_world));
   
-  if (!gol.solve())
+  if (gol.solve())
+    gol.get_first_world().print_world();
+  else
     cout << "impossible" << std::endl;
   
   return 0;
