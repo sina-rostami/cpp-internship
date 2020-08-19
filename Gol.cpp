@@ -27,7 +27,7 @@ public:
 
   void solve() {
     std::size_t max_size =
-        pow(2, first_world.get_height() * first_world.get_width());
+        1 << first_world.get_height() * first_world.get_width();
 
     for (std::size_t i = 0; i < max_size; i++) {
       first_world.next_world();

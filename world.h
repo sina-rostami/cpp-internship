@@ -5,85 +5,81 @@ using stdsize = std::size_t;
 class world {
 
 private:
-  Array2D<bool> world_board;
+  Array2D<bool> board;
 
   stdsize neighbour_counter(stdsize h_index, stdsize w_index) {
     stdsize lives = 0;
 
-    for (stdsize it = h_index + world_board.get_height() - 1;
-         it <= h_index + world_board.get_height() + 1; ++it)
-      for (stdsize jt = w_index + world_board.get_width() - 1;
-           jt <= w_index + world_board.get_width() + 1; ++jt)
-        if (world_board[it % world_board.get_height()]
-                       [jt % world_board.get_width()])
+    for (stdsize i = h_index + board.get_height() - 1;
+         i <= h_index + board.get_height() + 1; ++i)
+      for (stdsize j = w_index + board.get_width() - 1;
+           j <= w_index + board.get_width() + 1; ++j)
+        if (board[i % board.get_height()][j % board.get_width()])
           lives++;
 
-    if (world_board[h_index][w_index])
+    if (board[h_index][w_index])
       lives--;
 
     return lives;
   };
 
 public:
-  world(const Array2D<bool> &worldb) : world_board(worldb){};
+  world(const Array2D<bool> &worldb) : board(worldb){};
 
-  ssize_t get_height() const { return world_board.get_height(); };
+  ssize_t get_height() const { return board.get_height(); };
 
-  ssize_t get_width() const { return world_board.get_width(); };
+  ssize_t get_width() const { return board.get_width(); };
 
   void evolution() {
-    Array2D<bool> newWorld(world_board.get_height(), world_board.get_width());
+    Array2D<bool> newWorld(board.get_height(), board.get_width());
     int lives;
 
-    for (std::size_t i = 0; i != world_board.get_height(); ++i)
-      for (std::size_t j = 0; j != world_board.get_width(); ++j) {
+    for (std::size_t i = 0; i != board.get_height(); ++i)
+      for (std::size_t j = 0; j != board.get_width(); ++j) {
         lives = neighbour_counter(i, j);
-        if (world_board[i][j])
+        if (board[i][j])
           newWorld[i][j] = (lives == 3 || lives == 2);
         else
           newWorld[i][j] = (lives == 3);
       }
 
-    world_board = newWorld;
+    board = newWorld;
   };
 
   world &operator=(const world &other) {
-    world_board = other.world_board;
+    board = other.board;
 
     return *this;
   };
 
-  bool operator==(const world &other) const {
-    return world_board == other.world_board;
-  };
+  bool operator==(const world &other) const { return board == other.board; };
 
   bool operator!=(const world &other) const { return !operator==(other); };
 
   world &next_world() {
-    int max_h = world_board.get_height() - 1;
-    int max_w = world_board.get_width() - 1;
+    int max_h = board.get_height() - 1;
+    int max_w = board.get_width() - 1;
 
-    if (world_board[max_h][max_w]) {
-      for (ssize_t i = world_board.get_height() * world_board.get_width() - 1;
-           i > 0; --i) {
-        if (!world_board[0][i]) {
-          world_board[0][i] = true;
+    if (board[max_h][max_w]) {
+      for (ssize_t i = board.get_height() * board.get_width() - 1; i > 0; --i) {
+        if (!board[0][i]) {
+          board[0][i] = true;
           break;
         }
 
-        world_board[0][i] = false;
+        board[0][i] = false;
       }
     } else {
-      world_board[max_h][max_w] = true;
+      board[max_h][max_w] = true;
     }
 
     return *this;
   };
 
   void print_world() {
-    for (std::size_t i = 0; i < world_board.get_height(); i++) {
-      for (std::size_t j = 0; j < world_board.get_width(); j++)
-        std::cout << (world_board[i][j] ? "*" : ".");
+    for (std::size_t i = 0; i < board.get_height(); i++) {
+      for (std::size_t j = 0; j < board.get_width(); j++)
+        std::cout << (board[i][j] ? "*" : ".");
       std::cout << std::endl;
     }
     std::cout << std::endl;
