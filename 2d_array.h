@@ -5,8 +5,6 @@ private:
   T *arr_ptr;
 
 public:
-  Array2D(){}; // default constructor
-
   Array2D(std::size_t height1, std::size_t width1) // constructor
       : height(height1), width(width1), arr_ptr(new T[height * width]){};
 
