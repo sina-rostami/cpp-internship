@@ -3,12 +3,12 @@
 
 int main() {
   world w({3, 3});
-  int i = 9;
-  int ai = 1 << i;
-  std::cout << i << std::endl << ai << std::endl;
+  world a = w;
   for (int i = 0; i <= 16; i++) {
     w.next_world();
   }
-  world ww(w);
-  ww.print_world();
+  w.print_world();
+  a.print_world();
+  a = w;
+  a.print_world();
 }

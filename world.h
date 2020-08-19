@@ -46,17 +46,11 @@ public:
     board = newWorld;
   };
 
-  world &operator=(const world &other) {
-    board = other.board;
-
-    return *this;
-  };
-
   bool operator==(const world &other) const { return board == other.board; };
 
   bool operator!=(const world &other) const { return !operator==(other); };
 
-  world &next_world() {
+  void next_world() {
     int max_h = board.get_height() - 1;
     int max_w = board.get_width() - 1;
 
@@ -72,8 +66,6 @@ public:
     } else {
       board[max_h][max_w] = true;
     }
-
-    return *this;
   };
 
   void print_world() {
