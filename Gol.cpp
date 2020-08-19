@@ -21,22 +21,20 @@ public:
     return temp_world;
   }
 
-  void handle_found() { first_world.print_world(); }
-
   void handle_not_found() { cout << "impossible" << std::endl; };
 
-  void solve() {
+  int solve() {
     std::size_t max_size =
         1 << first_world.get_height() * first_world.get_width();
 
     for (std::size_t i = 0; i < max_size; i++) {
       first_world.next_world();
       if (do_evolutions(first_world) == final_world) {
-        handle_found();
-        return;
+        first_world.print_world();
+        return 1; // solving was successful !
       }
     }
-    handle_not_found();
+    return 0; // no first world found !
   };
 };
 
@@ -55,6 +53,11 @@ int main() {
   for (std::size_t i = 0; i < height; i++)
     for (std::size_t j = 0; j < width; j++)
       final_world[i][j] = (str[width * i + j] == '*');
+
   game_of_life gol(evolution_num, world(final_world));
-  gol.solve();
+  
+  if (!gol.solve())
+    cout << "impossible" << std::endl;
+  
+  return 0;
 }

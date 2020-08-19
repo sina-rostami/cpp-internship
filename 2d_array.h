@@ -6,7 +6,8 @@ private:
 
 public:
   Array2D(std::size_t height1, std::size_t width1) // constructor
-      : height(height1), width(width1), arr_ptr(new T[height * width]){};
+      : height(height1), width(width1),
+        arr_ptr(new T[height * width]){};
 
   Array2D(const Array2D<T> &other)
       : height(other.height), width(other.width),
