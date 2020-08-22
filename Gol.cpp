@@ -20,8 +20,6 @@ public:
     return temp_world;
   }
 
-  void handle_not_found() { cout << "impossible" << std::endl; };
-
   int solve() {
     std::size_t max_size =
         1 << first_world.get_height() * first_world.get_width();
