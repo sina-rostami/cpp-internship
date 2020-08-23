@@ -11,7 +11,6 @@ private:
   const std::size_t evolution_num;
   const world final_world;
   world first_world;
-  result res;
 
 public:
   game_of_life(const std::size_t ev_num, const world final_world1)
@@ -25,7 +24,7 @@ public:
     return temp_world;
   }
 
-  Gol::result solve() {
+  result solve() {
     std::size_t max_size =
         1 << first_world.get_height() * first_world.get_width();
 
@@ -33,10 +32,10 @@ public:
       first_world.next_world();
 
       if (do_evolutions(first_world) == final_world) {
-        return Gol::result::FOUND; // solving was successful !
+        return result::FOUND; 
       }
     }
-    return Gol::result::NOT_FOUND; // no first world found !
+    return result::NOT_FOUND; 
   };
 
   world get_first_world() const { return first_world; }
