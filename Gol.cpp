@@ -5,8 +5,9 @@ using std::string;
 
 class game_of_life {
 private:
-  std::size_t evolution_num;
-  world first_world, final_world;
+  const std::size_t evolution_num;
+  const world final_world;
+  world first_world;
 
 public:
   game_of_life(const std::size_t ev_num, const world final_world1)
@@ -34,7 +35,7 @@ public:
     return 0; // no first world found !
   };
 
-  world get_first_world() { return first_world; }
+  world get_first_world() const { return first_world; }
 };
 
 int main() {

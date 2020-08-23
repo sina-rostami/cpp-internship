@@ -5,9 +5,10 @@ private:
   T *arr_ptr;
 
 public:
+  Array2D() : height(1), width(1), arr_ptr(new T[1])  {}; 
+  
   Array2D(std::size_t height1, std::size_t width1) // constructor
-      : height(height1), width(width1),
-        arr_ptr(new T[height * width]){};
+      : height(height1), width(width1), arr_ptr(new T[height * width]){};
 
   Array2D(const Array2D<T> &other)
       : height(other.height), width(other.width),
@@ -21,7 +22,7 @@ public:
 
   ssize_t get_width() const { return width; }
 
-  void print() {
+  void print() const {
     std::cout << std::endl;
     for (std::size_t i = 0; i < height; ++i) {
       for (std::size_t j = 0; j < width; ++j)
@@ -61,4 +62,8 @@ public:
   }
 
   T *operator[](std::size_t hei) { return (arr_ptr + hei * width); };
+
+  const T *operator[](std::size_t hei) const {
+    return (arr_ptr + hei * width);
+  };
 };

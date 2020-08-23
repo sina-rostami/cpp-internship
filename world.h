@@ -7,7 +7,8 @@ class world {
 private:
   Array2D<bool> board;
 
-  stdsize neighbour_counter(stdsize h_index, stdsize w_index) {
+  stdsize neighbour_counter(const stdsize h_index,
+                            const stdsize w_index) const {
     stdsize lives = 0;
 
     for (stdsize i = h_index + board.get_height() - 1;
@@ -68,7 +69,7 @@ public:
     }
   };
 
-  void print_world() {
+  void print_world() const {
     for (std::size_t i = 0; i < board.get_height(); i++) {
       for (std::size_t j = 0; j < board.get_width(); j++)
         std::cout << (board[i][j] ? "*" : ".");
