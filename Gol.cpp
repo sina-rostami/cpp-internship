@@ -3,11 +3,15 @@ using std::cin;
 using std::cout;
 using std::string;
 
+namespace Gol {
+
+enum class result { NOT_FOUND, FOUND };
 class game_of_life {
 private:
   const std::size_t evolution_num;
   const world final_world;
   world first_world;
+  result res;
 
 public:
   game_of_life(const std::size_t ev_num, const world final_world1)
@@ -21,22 +25,24 @@ public:
     return temp_world;
   }
 
-  int solve() {
+  Gol::result solve() {
     std::size_t max_size =
         1 << first_world.get_height() * first_world.get_width();
 
     for (std::size_t i = 0; i < max_size; i++) {
       first_world.next_world();
-      
+
       if (do_evolutions(first_world) == final_world) {
-        return 1; // solving was successful !
+        return Gol::result::FOUND; // solving was successful !
       }
     }
-    return 0; // no first world found !
+    return Gol::result::NOT_FOUND; // no first world found !
   };
 
   world get_first_world() const { return first_world; }
 };
+
+}; // namespace Gol
 
 int main() {
   std::size_t height, width, evolution_num;
@@ -54,12 +60,13 @@ int main() {
     for (std::size_t j = 0; j < width; j++)
       final_world[i][j] = (str[width * i + j] == '*');
 
-  game_of_life gol(evolution_num, world(final_world));
+  Gol::game_of_life gol(evolution_num, world(final_world));
+  Gol::result gol_result = gol.solve();
   
-  if (gol.solve())
+  if (gol_result == Gol::result::FOUND)
     cout << gol.get_first_world();
   else
     cout << "impossible" << std::endl;
-  
+
   return 0;
 }

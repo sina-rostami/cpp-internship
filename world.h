@@ -9,8 +9,7 @@ class world {
 private:
   Array2D<bool> board;
 
-  stdsize neighbour_counter(const stdsize h_index,
-                            const stdsize w_index) const {
+  stdsize neighbour_counter(const stdsize h_index, const stdsize w_index) const {
     stdsize lives = 0;
 
     for (stdsize i = h_index + board.get_height() - 1;
@@ -72,7 +71,7 @@ public:
   };
 
   friend std::ostream &operator<<(std::ostream &os, const world &w);
-  
+
 };
 
 std::ostream &operator<<(std::ostream &os, const world &w) {
