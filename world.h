@@ -1,5 +1,7 @@
 #include "2d_array.h"
+
 #include <iostream>
+
 using stdsize = std::size_t;
 
 class world {
@@ -69,12 +71,17 @@ public:
     }
   };
 
-  void print_world() const {
-    for (std::size_t i = 0; i < board.get_height(); i++) {
-      for (std::size_t j = 0; j < board.get_width(); j++)
-        std::cout << (board[i][j] ? "*" : ".");
-      std::cout << std::endl;
-    }
-    std::cout << std::endl;
-  };
+  friend std::ostream &operator<<(std::ostream &os, const world &w);
+  
+};
+
+std::ostream &operator<<(std::ostream &os, const world &w) {
+  for (std::size_t i = 0; i < w.board.get_height(); i++) {
+    for (std::size_t j = 0; j < w.board.get_width(); j++)
+      os << (w.board[i][j] ? "*" : ".");
+    os << std::endl;
+  }
+  os << std::endl;
+
+  return os;
 };

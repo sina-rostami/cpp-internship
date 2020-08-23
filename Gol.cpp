@@ -57,7 +57,7 @@ int main() {
   game_of_life gol(evolution_num, world(final_world));
   
   if (gol.solve())
-    gol.get_first_world().print_world();
+    cout << gol.get_first_world();
   else
     cout << "impossible" << std::endl;
   
