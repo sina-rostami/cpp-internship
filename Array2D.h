@@ -19,9 +19,9 @@ public:
 
   ~Array2D() { delete[] arr_ptr; } // distructor
 
-  ssize_t height() const { return height; }
+  ssize_t get_height() const { return height; }
 
-  ssize_t width() const { return width; }
+  ssize_t get_width() const { return width; }
 
   bool operator==(const Array2D<T> &other) const {
     if (width != other.width || height != other.height)

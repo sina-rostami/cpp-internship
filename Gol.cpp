@@ -16,7 +16,7 @@ public:
   GameOfLife(const std::size_t ev_num, const World final_world1)
       : evolution_num(ev_num), final_world(final_world1),
         first_world(World(
-            Array2D<bool>(final_world1.height(), final_world1.width()))){};
+            Array2D<bool>(final_world1.get_height(), final_world1.get_width()))){};
 
   World do_evolutions(World temp_world) {
     for (std::size_t i = 0; i < evolution_num; i++)
@@ -25,7 +25,7 @@ public:
   }
 
   Result solve() {
-    std::size_t max_size = 1 << first_world.height() * first_world.width();
+    std::size_t max_size = 1 << first_world.get_height() * first_world.get_width();
 
     for (std::size_t i = 0; i < max_size; i++) {
       first_world.next_world();

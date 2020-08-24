@@ -28,16 +28,16 @@ private:
 public:
   World(const Array2D<bool> &worldb) : board(worldb){};
 
-  ssize_t height() const { return board.height(); };
+  ssize_t get_height() const { return board.get_height(); };
 
-  ssize_t width() const { return board.width(); };
+  ssize_t get_width() const { return board.get_width(); };
 
   void evolution() {
-    Array2D<bool> newWorld(board.height(), board.width());
+    Array2D<bool> newWorld(board.get_height(), board.get_width());
     int lives;
 
-    for (std::size_t i = 0; i != board.height(); ++i)
-      for (std::size_t j = 0; j != board.width(); ++j) {
+    for (std::size_t i = 0; i != board.get_height(); ++i)
+      for (std::size_t j = 0; j != board.get_width(); ++j) {
         lives = neighbour_counter(i, j);
         if (board[i][j])
           newWorld[i][j] = (lives == 3 || lives == 2);
@@ -53,11 +53,11 @@ public:
   bool operator!=(const World &other) const { return !operator==(other); };
 
   void next_world() {
-    int max_h = board.height() - 1;
-    int max_w = board.width() - 1;
+    int max_h = board.get_height() - 1;
+    int max_w = board.get_width() - 1;
 
     if (board[max_h][max_w]) {
-      for (ssize_t i = board.height() * board.width() - 1; i > 0; --i) {
+      for (ssize_t i = board.get_height() * board.get_width() - 1; i > 0; --i) {
         if (!board[0][i]) {
           board[0][i] = true;
           break;
@@ -74,8 +74,8 @@ public:
 };
 
 std::ostream &operator<<(std::ostream &os, const World &w) {
-  for (std::size_t i = 0; i < w.board.height(); i++) {
-    for (std::size_t j = 0; j < w.board.width(); j++)
+  for (std::size_t i = 0; i < w.board.get_height(); i++) {
+    for (std::size_t j = 0; j < w.board.get_width(); j++)
       os << (w.board[i][j] ? "*" : ".");
     os << std::endl;
   }
