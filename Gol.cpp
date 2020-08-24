@@ -5,40 +5,39 @@ using std::string;
 
 namespace Gol {
 
-enum class result { NOT_FOUND, FOUND };
-class game_of_life {
+enum class Result { NOT_FOUND, FOUND };
+class GameOfLife {
 private:
   const std::size_t evolution_num;
-  const world final_world;
-  world first_world;
+  const World final_world;
+  World first_world;
 
 public:
-  game_of_life(const std::size_t ev_num, const world final_world1)
+  GameOfLife(const std::size_t ev_num, const World final_world1)
       : evolution_num(ev_num), final_world(final_world1),
-        first_world(world(Array2D<bool>(final_world1.get_height(),
-                                        final_world1.get_width()))){};
+        first_world(World(
+            Array2D<bool>(final_world1.height(), final_world1.width()))){};
 
-  world do_evolutions(world temp_world) {
+  World do_evolutions(World temp_world) {
     for (std::size_t i = 0; i < evolution_num; i++)
       temp_world.evolution();
     return temp_world;
   }
 
-  result solve() {
-    std::size_t max_size =
-        1 << first_world.get_height() * first_world.get_width();
+  Result solve() {
+    std::size_t max_size = 1 << first_world.height() * first_world.width();
 
     for (std::size_t i = 0; i < max_size; i++) {
       first_world.next_world();
 
       if (do_evolutions(first_world) == final_world) {
-        return result::FOUND; 
+        return Result::FOUND; 
       }
     }
-    return result::NOT_FOUND; 
+    return Result::NOT_FOUND; 
   };
 
-  world get_first_world() const { return first_world; }
+  World get_first_world() const { return first_world; }
 };
 
 }; // namespace Gol
@@ -59,10 +58,10 @@ int main() {
     for (std::size_t j = 0; j < width; j++)
       final_world[i][j] = (str[width * i + j] == '*');
 
-  Gol::game_of_life gol(evolution_num, world(final_world));
-  Gol::result gol_result = gol.solve();
+  Gol::GameOfLife gol(evolution_num, World(final_world));
+  Gol::Result gol_result = gol.solve();
   
-  if (gol_result == Gol::result::FOUND)
+  if (gol_result == Gol::Result::FOUND)
     cout << gol.get_first_world();
   else
     cout << "impossible" << std::endl;

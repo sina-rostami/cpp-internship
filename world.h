@@ -1,10 +1,10 @@
-#include "2d_array.h"
+#include "Array2D.h"
 
 #include <iostream>
 
 using stdsize = std::size_t;
 
-class world {
+class World {
 
 private:
   Array2D<bool> board;
@@ -26,18 +26,18 @@ private:
   };
 
 public:
-  world(const Array2D<bool> &worldb) : board(worldb){};
+  World(const Array2D<bool> &worldb) : board(worldb){};
 
-  ssize_t get_height() const { return board.get_height(); };
+  ssize_t height() const { return board.height(); };
 
-  ssize_t get_width() const { return board.get_width(); };
+  ssize_t width() const { return board.width(); };
 
   void evolution() {
-    Array2D<bool> newWorld(board.get_height(), board.get_width());
+    Array2D<bool> newWorld(board.height(), board.width());
     int lives;
 
-    for (std::size_t i = 0; i != board.get_height(); ++i)
-      for (std::size_t j = 0; j != board.get_width(); ++j) {
+    for (std::size_t i = 0; i != board.height(); ++i)
+      for (std::size_t j = 0; j != board.width(); ++j) {
         lives = neighbour_counter(i, j);
         if (board[i][j])
           newWorld[i][j] = (lives == 3 || lives == 2);
@@ -48,16 +48,16 @@ public:
     board = newWorld;
   };
 
-  bool operator==(const world &other) const { return board == other.board; };
+  bool operator==(const World &other) const { return board == other.board; };
 
-  bool operator!=(const world &other) const { return !operator==(other); };
+  bool operator!=(const World &other) const { return !operator==(other); };
 
   void next_world() {
-    int max_h = board.get_height() - 1;
-    int max_w = board.get_width() - 1;
+    int max_h = board.height() - 1;
+    int max_w = board.width() - 1;
 
     if (board[max_h][max_w]) {
-      for (ssize_t i = board.get_height() * board.get_width() - 1; i > 0; --i) {
+      for (ssize_t i = board.height() * board.width() - 1; i > 0; --i) {
         if (!board[0][i]) {
           board[0][i] = true;
           break;
@@ -70,13 +70,12 @@ public:
     }
   };
 
-  friend std::ostream &operator<<(std::ostream &os, const world &w);
-
+  friend std::ostream &operator<<(std::ostream &os, const World &w);
 };
 
-std::ostream &operator<<(std::ostream &os, const world &w) {
-  for (std::size_t i = 0; i < w.board.get_height(); i++) {
-    for (std::size_t j = 0; j < w.board.get_width(); j++)
+std::ostream &operator<<(std::ostream &os, const World &w) {
+  for (std::size_t i = 0; i < w.board.height(); i++) {
+    for (std::size_t j = 0; j < w.board.width(); j++)
       os << (w.board[i][j] ? "*" : ".");
     os << std::endl;
   }
