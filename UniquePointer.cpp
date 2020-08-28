@@ -54,29 +54,22 @@ public:
     return *this;
   }
 
-  /*
-    UniquePointer<T> &operator=(const UniquePointer<T> &other) {
-      if (this == &other) // self assingment
-        return *this;
-
-      delete obj_ptr;
-      obj_ptr = new T(*other.obj_ptr);
-      return *this;
-    }
-  */
 
   T *operator->() const { return obj_ptr; }
 
   T &operator*() const { return *obj_ptr; }
 
   operator bool() const { return obj_ptr != nullptr; }
+  
+  UniquePointer<T> &operator=(const UniquePointer<T> &other) = delete; // copy assignment
+  UniquePointer(const UniquePointer<T> &other) = delete; // copy constructor 
 };
 
 using std::string;
 int main()
 {
   UniquePointer<string> a(new string("are"));
+  UniquePointer<string> b;
   
   string *r = a.release();
-  
 }
