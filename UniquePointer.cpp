@@ -10,7 +10,7 @@ private:
 public:
   UniquePointer() : obj_ptr(nullptr){};
 
-  UniquePointer(T *t) : obj_ptr(t) { cout << "unique pointer creating\n"; };
+  UniquePointer(T *t) : obj_ptr{t} { cout << "unique pointer creating\n"; };
 
   UniquePointer(UniquePointer<T> &&other)
       : obj_ptr(nullptr) { // move constructor
@@ -44,6 +44,8 @@ public:
     other.obj_ptr = temp;
   }
 
+  T *get() const { return obj_ptr; }
+
   UniquePointer<T> &operator=(UniquePointer<T> &&other) { // move assignment
     if (this == &other) // self assingment
       return *this;
@@ -66,10 +68,9 @@ public:
 };
 
 using std::string;
+
+
 int main()
 {
-  UniquePointer<string> a(new string("are"));
-  UniquePointer<string> b;
-  
-  string *r = a.release();
+
 }
