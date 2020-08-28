@@ -23,8 +23,6 @@ public:
               arr_ptr.get());
   }
 
-  ~Array2D() = default; // distructor
-
   ssize_t get_height() const { return height; }
 
   ssize_t get_width() const { return width; }
