@@ -24,7 +24,6 @@ public:
   ~UniquePointer() {
     cout << "unique pointer deleting\n";
     delete obj_ptr;
-    obj_ptr = nullptr;
   }
 
 
