@@ -8,7 +8,7 @@ private:
   T *obj_ptr;
 
 public:
-  UniquePointer() = default;
+  UniquePointer() : obj_ptr(nullptr){};
 
   UniquePointer(T *t) : obj_ptr(t) { cout << "unique pointer creating\n"; };
 
@@ -22,11 +22,9 @@ public:
   }
 
   ~UniquePointer() {
-    if (obj_ptr != nullptr) {
-      cout << "unique pointer deleting\n";
-      delete obj_ptr;
-      obj_ptr = nullptr;
-    }
+    cout << "unique pointer deleting\n";
+    delete obj_ptr;
+    obj_ptr = nullptr;
   }
 
 
@@ -83,5 +81,6 @@ int main()
 {
   UniquePointer<string> a(new string("are"));
   UniquePointer<string> b;
+  string *r = a.release();
   cout << b << endl;
 }
