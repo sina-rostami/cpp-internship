@@ -65,18 +65,18 @@ public:
     }
   */
 
-  T *operator->() { return obj_ptr; }
+  T *operator->() const { return obj_ptr; }
 
-  T &operator*() { return *obj_ptr; }
+  T &operator*() const { return *obj_ptr; }
 
-  operator bool() { return obj_ptr != nullptr; }
+  operator bool() const { return obj_ptr != nullptr; }
 };
 
 using std::string;
 int main()
 {
   UniquePointer<string> a(new string("are"));
-  UniquePointer<string> b;
+  
   string *r = a.release();
-  cout << b << endl;
+  
 }
