@@ -12,9 +12,6 @@ public:
 
   UniquePointer(T *t) : obj_ptr(t) { cout << "unique pointer creating\n"; };
 
-  UniquePointer(const UniquePointer<T> &other)
-      : obj_ptr(new T(*other.obj_ptr)){};
-
   UniquePointer(UniquePointer<T> &&other)
       : obj_ptr(nullptr) { // move constructor
     obj_ptr = other.obj_ptr;
