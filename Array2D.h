@@ -9,7 +9,7 @@ private:
   unique_ptr<T[]> arr_ptr;
 
 public:
-  Array2D() : height(0), width(0), arr_ptr(unique_ptr<T[]>()){};
+  Array2D() : Array2D(0,0) {};
 
   Array2D(const std::size_t height1, const std::size_t width1) // constructor
       : height(height1), width(width1),
