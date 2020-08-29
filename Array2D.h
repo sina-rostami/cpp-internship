@@ -1,7 +1,6 @@
 #include <iostream>
 #include <memory>
 
-
 using std::unique_ptr;
 
 template <typename T> class Array2D {
@@ -10,11 +9,11 @@ private:
   unique_ptr<T[]> arr_ptr;
 
 public:
-  Array2D() { Array2D(1, 1); };
+  Array2D() : height(0), width(0), arr_ptr(unique_ptr<T[]>()){};
 
-  Array2D(std::size_t height1, std::size_t width1) // constructor
+  Array2D(const std::size_t height1, const std::size_t width1) // constructor
       : height(height1), width(width1),
-        arr_ptr(unique_ptr<T[]>(new T[height * width])) {};
+        arr_ptr(unique_ptr<T[]>(new T[height * width])){};
 
   Array2D(const Array2D<T> &other)
       : height(other.height), width(other.width),
@@ -36,9 +35,7 @@ public:
     return true;
   }
 
-  bool operator!=(const Array2D<T> &other) const {
-    return !operator==(other);
-  }
+  bool operator!=(const Array2D<T> &other) const { return !operator==(other); }
 
   Array2D<T> &operator=(const Array2D<T> &other) {
     if (this == &other) // self assingment
@@ -47,7 +44,8 @@ public:
     height = other.height;
     width = other.width;
     arr_ptr = unique_ptr<T[]>(new T[height * width]);
-    std::copy(other.arr_ptr.get(), other.arr_ptr.get() + height * width, arr_ptr.get());
+    std::copy(other.arr_ptr.get(), other.arr_ptr.get() + height * width,
+              arr_ptr.get());
     return *this;
   }
 
