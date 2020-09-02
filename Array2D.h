@@ -9,7 +9,7 @@ private:
   unique_ptr<T[]> arr_ptr;
 
 public:
-  Array2D() : Array2D(0,0) {};
+  Array2D() : Array2D(0, 0){};
 
   Array2D(const std::size_t height1, const std::size_t width1) // constructor
       : height(height1), width(width1),
@@ -29,10 +29,9 @@ public:
   bool operator==(const Array2D<T> &other) const {
     if (width != other.width || height != other.height)
       return false;
-    for (std::size_t i = 0; i < height * width; ++i)
-      if (arr_ptr[i] != other.arr_ptr[i])
-        return false;
-    return true;
+    return std::equal(
+        arr_ptr.get(),
+        arr_ptr.get() + height * width, other.arr_ptr.get());
   }
 
   bool operator!=(const Array2D<T> &other) const { return !operator==(other); }
