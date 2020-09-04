@@ -12,7 +12,7 @@ public:
 
   UniquePointer(T *t) : obj_ptr{t} { cout << "unique pointer creating\n"; };
 
-  UniquePointer(UniquePointer<T> &&other)
+  UniquePointer(const UniquePointer<T> &&other)
       : obj_ptr(nullptr) { // move constructor
     obj_ptr = other.obj_ptr;
     other.obj_ptr = nullptr;
@@ -23,11 +23,9 @@ public:
     delete obj_ptr;
   }
 
-
   void reset(T *t) {
-    if(obj_ptr) {
+    if (obj_ptr)
       delete obj_ptr;
-    }
     obj_ptr = t;
   }
 
@@ -37,7 +35,6 @@ public:
     return temp;
   }
 
-
   void swap(UniquePointer<T> &other) {
     T *temp = obj_ptr;
     obj_ptr = other.obj_ptr;
@@ -46,7 +43,8 @@ public:
 
   T *get() const { return obj_ptr; }
 
-  UniquePointer<T> &operator=(UniquePointer<T> &&other) { // move assignment
+  UniquePointer<T> &operator=( UniquePointer<T> &&other) { // move assignment
+    cout << "move assignment\n";
     if (this == &other) // self assingment
       return *this;
 
@@ -56,21 +54,20 @@ public:
     return *this;
   }
 
-
   T *operator->() const { return obj_ptr; }
 
   T &operator*() const { return *obj_ptr; }
 
   operator bool() const { return obj_ptr != nullptr; }
-  
-  UniquePointer<T> &operator=(const UniquePointer<T> &other) = delete; // copy assignment
-  UniquePointer(const UniquePointer<T> &other) = delete; // copy constructor 
-};
 
+  UniquePointer<T> &
+  operator=(const UniquePointer<T> &other) = delete;     // copy assignment
+  UniquePointer(const UniquePointer<T> &other) = delete; // copy constructor
+};
 using std::string;
 
-
-int main()
-{
-
+int main() {
+  UniquePointer<string> str(new string("hola"));
+  str = UniquePointer<string>(new string("holle"));
+  cout << *str << endl;
 }
