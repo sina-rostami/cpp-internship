@@ -1,4 +1,5 @@
 #include <iostream>
+#include <memory>
 
 using std::cout;
 using std::endl;
@@ -12,8 +13,9 @@ public:
 
   UniquePointer(T *t) : obj_ptr{t} { cout << "unique pointer creating\n"; };
 
-  UniquePointer(const UniquePointer<T> &&other)
+  UniquePointer(UniquePointer<T> &&other)
       : obj_ptr(nullptr) { // move constructor
+    cout << "move constructor\n";
     obj_ptr = other.obj_ptr;
     other.obj_ptr = nullptr;
   }
@@ -30,20 +32,20 @@ public:
   }
 
   T *release() {
-    T *temp = obj_ptr;
+    T *const temp = obj_ptr;
     obj_ptr = nullptr;
     return temp;
   }
 
   void swap(UniquePointer<T> &other) {
-    T *temp = obj_ptr;
+    T *const temp = obj_ptr;
     obj_ptr = other.obj_ptr;
     other.obj_ptr = temp;
   }
 
-  T *get() const { return obj_ptr; }
+  T *const get() const { return obj_ptr; }
 
-  UniquePointer<T> &operator=( UniquePointer<T> &&other) { // move assignment
+  UniquePointer<T> &operator=(UniquePointer<T> &&other) { // move assignment
     cout << "move assignment\n";
     if (this == &other) // self assingment
       return *this;
@@ -54,9 +56,9 @@ public:
     return *this;
   }
 
-  T *operator->() const { return obj_ptr; }
+  T *const operator->() const { return obj_ptr; }
 
-  T &operator*() const { return *obj_ptr; }
+  const T & operator*() const { return *obj_ptr; }
 
   operator bool() const { return obj_ptr != nullptr; }
 
@@ -67,7 +69,9 @@ public:
 using std::string;
 
 int main() {
-  UniquePointer<string> str(new string("hola"));
-  str = UniquePointer<string>(new string("holle"));
+  UniquePointer<string> str(new string("holle"));
   cout << *str << endl;
+  str->append("aaa");
+  cout << *str << endl;
+  return 0;
 }
