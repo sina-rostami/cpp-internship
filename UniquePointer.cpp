@@ -11,7 +11,9 @@ private:
 public:
   UniquePointer() : obj_ptr(nullptr){};
 
-  UniquePointer(T *t) : obj_ptr{t} { cout << "unique pointer creating\n"; };
+  UniquePointer(T *const t) : obj_ptr{t} {
+    cout << "unique pointer creating\n";
+  };
 
   UniquePointer(UniquePointer<T> &&other)
       : obj_ptr(nullptr) { // move constructor
@@ -25,7 +27,7 @@ public:
     delete obj_ptr;
   }
 
-  void reset(T *t) {
+  void reset(T *const t) {
     if (obj_ptr)
       delete obj_ptr;
     obj_ptr = t;
@@ -56,9 +58,9 @@ public:
     return *this;
   }
 
-  T *const operator->() const { return obj_ptr; }
+  T *operator->() const { return obj_ptr; }
 
-  const T & operator*() const { return *obj_ptr; }
+  T &operator*() const { return *obj_ptr; }
 
   operator bool() const { return obj_ptr != nullptr; }
 
@@ -69,9 +71,10 @@ public:
 using std::string;
 
 int main() {
-  UniquePointer<string> str(new string("holle"));
+  string *s =
+      new string("holle");
+  UniquePointer<string> str(s);
   cout << *str << endl;
-  str->append("aaa");
-  cout << *str << endl;
+  cout << *s << endl;
   return 0;
 }
