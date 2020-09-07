@@ -1,2 +1,0 @@
-/home/sina/Desktop/programming/Nimbo/Reverse_costumizedGameOfLife/build_systems_toturial/build/CMakeFiles/rebuild_cache.dir
-/home/sina/Desktop/programming/Nimbo/Reverse_costumizedGameOfLife/build_systems_toturial/build/CMakeFiles/edit_cache.dir
