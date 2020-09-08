@@ -1,0 +1,2 @@
+/usr/bin/x86_64-linux-gnu-ar qc libGtestLearning.a CMakeFiles/GtestLearning.dir/Example.cpp.o
+/usr/bin/x86_64-linux-gnu-ranlib libGtestLearning.a
