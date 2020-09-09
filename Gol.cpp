@@ -1,4 +1,4 @@
-#include "Universe.h"
+#include "Universe.hpp"
 #include <unistd.h>
 using std::cin;
 using std::cout;

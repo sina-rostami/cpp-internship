@@ -1,4 +1,4 @@
-#include "Array2D.h"
+#include "Array2D.hpp"
 
 #include <iostream>
 
