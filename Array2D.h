@@ -7,16 +7,13 @@ using std::vector;
 template <typename T> class Array2D {
 private:
   std::size_t height, width;
-  vector<vector<T>> vc;
+  vector<T> vc;
 
 public:
   Array2D() : Array2D(0, 0){};
 
   Array2D(const size_t height1, const size_t width1) // constructor
-      : height(height1), width(width1), vc(vector<vector<T>>(height)) {
-    for (size_t i = 0; i < height; ++i)
-      vc[i] = vector<T>(width);
-  }
+      : height(height1), width(width1), vc(vector<T>(height * width)) {}
 
   Array2D(const Array2D<T> &other)
       : height(other.height), width(other.width) { // copy constructor
@@ -45,9 +42,9 @@ public:
     return *this;
   }
 
-  vector<T> &operator[](size_t hei) { return vc.at(hei); }
+  T *operator[](size_t hei) { return &vc.at(hei * width); }
 
-  const vector<T> &operator[](size_t hei) const { return vc.at(hei); }
+  const T *operator[](size_t hei) const { return &vc.at(hei * width); }
 };
 
 template <typename T>
