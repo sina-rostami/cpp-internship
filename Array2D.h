@@ -1,6 +1,8 @@
 #include <iostream>
+#include <iterator>
 #include <memory>
 #include <vector>
+
 using std::size_t;
 using std::vector;
 
@@ -42,9 +44,12 @@ public:
     return *this;
   }
 
-  T *operator[](size_t hei) { return &vc.at(hei * width); }
-
-  const T *operator[](size_t hei) const { return &vc.at(hei * width); }
+  typename vector<T>::iterator operator[](size_t hei) {
+    return vc.begin() + hei * width;
+  }
+  typename vector<T>::const_iterator operator[](size_t hei) const {
+    return vc.cbegin() + hei * width;
+  }
 };
 
 template <typename T>
