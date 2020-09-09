@@ -2,19 +2,19 @@
 
 #include <iostream>
 
-using stdsize = std::size_t;
+using std::size_t;
 
 class World {
 
 private:
   Array2D<bool> board;
 
-  stdsize neighbour_counter(const stdsize h_index, const stdsize w_index) const {
-    stdsize lives = 0;
+  size_t neighbour_counter(const size_t h_index, const size_t w_index) const {
+    size_t lives = 0;
 
-    for (stdsize i = h_index + board.get_height() - 1;
+    for (size_t i = h_index + board.get_height() - 1;
          i <= h_index + board.get_height() + 1; ++i)
-      for (stdsize j = w_index + board.get_width() - 1;
+      for (size_t j = w_index + board.get_width() - 1;
            j <= w_index + board.get_width() + 1; ++j)
         if (board[i % board.get_height()][j % board.get_width()])
           lives++;
@@ -28,16 +28,16 @@ private:
 public:
   World(const Array2D<bool> &worldb) : board(worldb){};
 
-  ssize_t get_height() const { return board.get_height(); };
+  size_t get_height() const { return board.get_height(); };
 
-  ssize_t get_width() const { return board.get_width(); };
+  size_t get_width() const { return board.get_width(); };
 
   void evolution() {
     Array2D<bool> newWorld(board.get_height(), board.get_width());
     int lives;
 
-    for (std::size_t i = 0; i != board.get_height(); ++i)
-      for (std::size_t j = 0; j != board.get_width(); ++j) {
+    for (size_t i = 0; i != board.get_height(); ++i)
+      for (size_t j = 0; j != board.get_width(); ++j) {
         lives = neighbour_counter(i, j);
         if (board[i][j])
           newWorld[i][j] = (lives == 3 || lives == 2);
@@ -55,18 +55,20 @@ public:
   void next_world() {
     int max_h = board.get_height() - 1;
     int max_w = board.get_width() - 1;
-
     if (board[max_h][max_w]) {
-      for (ssize_t i = board.get_height() * board.get_width() - 1; i > 0; --i) {
-        if (!board[0][i]) {
-          board[0][i] = true;
-          break;
-        }
+      for (size_t i = board.get_height() - 1; i >= 0 && i < board.get_height(); --i) {
+        for (size_t j = board.get_width() - 1; j >= 0 && j < board.get_width(); --j) {
+          if (!board[i][j]) {
+            board[i][j] = 1;
+            return;
+          }
 
-        board[0][i] = false;
+          board[i][j] = 0;
+
+        }
       }
     } else {
-      board[max_h][max_w] = true;
+      board[max_h][max_w] = 1;
     }
   };
 
@@ -74,8 +76,8 @@ public:
 };
 
 std::ostream &operator<<(std::ostream &os, const World &w) {
-  for (std::size_t i = 0; i < w.board.get_height(); i++) {
-    for (std::size_t j = 0; j < w.board.get_width(); j++)
+  for (size_t i = 0; i < w.board.get_height(); i++) {
+    for (size_t j = 0; j < w.board.get_width(); j++)
       os << (w.board[i][j] ? "*" : ".");
     os << std::endl;
   }

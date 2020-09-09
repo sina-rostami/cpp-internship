@@ -1,37 +1,36 @@
 #include <iostream>
 #include <memory>
-
-using std::unique_ptr;
+#include <vector>
+using std::size_t;
+using std::vector;
 
 template <typename T> class Array2D {
 private:
   std::size_t height, width;
-  unique_ptr<T[]> arr_ptr;
+  vector<vector<T>> vc;
 
 public:
   Array2D() : Array2D(0, 0){};
 
-  Array2D(const std::size_t height1, const std::size_t width1) // constructor
-      : height(height1), width(width1),
-        arr_ptr(unique_ptr<T[]>(new T[height * width])){};
-
-  Array2D(const Array2D<T> &other)
-      : height(other.height), width(other.width),
-        arr_ptr(unique_ptr<T[]>(new T[height * width])) { // copy constructor
-    std::copy(other.arr_ptr.get(), other.arr_ptr.get() + height * width,
-              arr_ptr.get());
+  Array2D(const size_t height1, const size_t width1) // constructor
+      : height(height1), width(width1), vc(vector<vector<T>>(height)) {
+    for (size_t i = 0; i < height; ++i)
+      vc[i] = vector<T>(width);
   }
 
-  ssize_t get_height() const { return height; }
+  Array2D(const Array2D<T> &other)
+      : height(other.height), width(other.width) { // copy constructor
+    vc = other.vc;
+  }
 
-  ssize_t get_width() const { return width; }
+  size_t get_height() const { return height; }
+
+  size_t get_width() const { return width; }
 
   bool operator==(const Array2D<T> &other) const {
     if (width != other.width || height != other.height)
       return false;
-    return std::equal(
-        arr_ptr.get(),
-        arr_ptr.get() + height * width, other.arr_ptr.get());
+    return vc == other.vc;
   }
 
   bool operator!=(const Array2D<T> &other) const { return !operator==(other); }
@@ -42,24 +41,20 @@ public:
 
     height = other.height;
     width = other.width;
-    arr_ptr = unique_ptr<T[]>(new T[height * width]);
-    std::copy(other.arr_ptr.get(), other.arr_ptr.get() + height * width,
-              arr_ptr.get());
+    vc = other.vc;
     return *this;
   }
 
-  T *operator[](std::size_t hei) { return (arr_ptr.get() + hei * width); };
+  vector<T> &operator[](size_t hei) { return vc.at(hei); }
 
-  const T *operator[](std::size_t hei) const {
-    return (arr_ptr.get() + hei * width);
-  };
+  const vector<T> &operator[](size_t hei) const { return vc.at(hei); }
 };
 
 template <typename T>
 std::ostream &operator<<(std::ostream &os, const Array2D<T> &arr) {
   os << std::endl;
-  for (std::size_t i = 0; i < arr.get_height(); ++i) {
-    for (std::size_t j = 0; j < arr.get_width(); ++j)
+  for (size_t i = 0; i < arr.get_height(); ++i) {
+    for (size_t j = 0; j < arr.get_width(); ++j)
       os << arr[i][j] << ", ";
     os << std::endl;
   }

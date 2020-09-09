@@ -1,4 +1,5 @@
 #include "World.h"
+#include<unistd.h>
 using std::cin;
 using std::cout;
 using std::string;
@@ -33,6 +34,7 @@ public:
       if (do_evolutions(first_world) == final_world) {
         return Result::FOUND; 
       }
+      cout << first_world;
     }
     return Result::NOT_FOUND; 
   };
