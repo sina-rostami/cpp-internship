@@ -1,20 +1,19 @@
 #include "Array2D.hpp"
 
-#include <iostream>
 
-using std::size_t;
 namespace Universe {
 enum class HumanState { DEAD, ALIVE };
 class World {
 private:
   Array2D<HumanState> board;
 
-  size_t neighbour_counter(const size_t h_index, const size_t w_index) const {
-    size_t lives = 0;
+  std::size_t neighbour_counter(const std::size_t h_index,
+                                const std::size_t w_index) const {
+    std::size_t lives = 0;
 
-    for (size_t i = h_index + board.get_height() - 1;
+    for (std::size_t i = h_index + board.get_height() - 1;
          i <= h_index + board.get_height() + 1; ++i)
-      for (size_t j = w_index + board.get_width() - 1;
+      for (std::size_t j = w_index + board.get_width() - 1;
            j <= w_index + board.get_width() + 1; ++j)
         if (board[i % get_height()][j % get_width()] == HumanState::ALIVE)
           lives++;
@@ -28,16 +27,16 @@ private:
 public:
   World(const Array2D<HumanState> &worldb) : board(worldb){};
 
-  size_t get_height() const { return board.get_height(); };
+  std::size_t get_height() const { return board.get_height(); };
 
-  size_t get_width() const { return board.get_width(); };
+  std::size_t get_width() const { return board.get_width(); };
 
   void evolution() {
     Array2D<HumanState> newWorld(board.get_height(), board.get_width());
     int lives;
 
-    for (size_t i = 0; i != board.get_height(); ++i)
-      for (size_t j = 0; j != board.get_width(); ++j) {
+    for (std::size_t i = 0; i != board.get_height(); ++i)
+      for (std::size_t j = 0; j != board.get_width(); ++j) {
         lives = neighbour_counter(i, j);
         if (board[i][j] == HumanState::ALIVE)
           newWorld[i][j] =
@@ -58,8 +57,8 @@ public:
     int max_w = get_width() - 1;
 
     if (board[max_h][max_w] == HumanState::ALIVE) {
-      for (size_t i = get_height() - 1; i >= 0 && i < get_height(); --i) {
-        for (size_t j = get_width() - 1; j >= 0 && j < get_width(); --j) {
+      for (std::size_t i = get_height() - 1; i >= 0 && i < get_height(); --i) {
+        for (std::size_t j = get_width() - 1; j >= 0 && j < get_width(); --j) {
           if (board[i][j] == HumanState::DEAD) {
             board[i][j] = HumanState::ALIVE;
             return;
@@ -76,8 +75,8 @@ public:
 };
 
 std::ostream &operator<<(std::ostream &os, const World &w) {
-  for (size_t i = 0; i < w.board.get_height(); i++) {
-    for (size_t j = 0; j < w.board.get_width(); j++)
+  for (std::size_t i = 0; i < w.board.get_height(); i++) {
+    for (std::size_t j = 0; j < w.board.get_width(); j++)
       os << (w.board[i][j] == HumanState::ALIVE ? "*" : ".");
     os << std::endl;
   }

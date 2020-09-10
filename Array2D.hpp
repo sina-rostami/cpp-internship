@@ -1,53 +1,29 @@
-#include <iostream>
 #include <iterator>
-#include <memory>
 #include <vector>
-
-using std::size_t;
-using std::vector;
 
 template <typename T> class Array2D {
 private:
   std::size_t height, width;
-  vector<T> vc;
+  std::vector<T> vc;
 
 public:
   Array2D() : Array2D(0, 0){};
 
-  Array2D(const size_t height1, const size_t width1) // constructor
-      : height(height1), width(width1), vc(vector<T>(height * width)) {}
+  Array2D(const std::size_t height1, const std::size_t width1) // constructor
+      : height(height1), width(width1), vc(std::vector<T>(height * width)) {}
 
-  Array2D(const Array2D<T> &other)
-      : height(other.height), width(other.width) { // copy constructor
-    vc = other.vc;
-  }
+  std::size_t get_height() const { return height; }
 
-  size_t get_height() const { return height; }
-
-  size_t get_width() const { return width; }
+  std::size_t get_width() const { return width; }
 
   bool operator==(const Array2D<T> &other) const {
-    if (width != other.width || height != other.height)
-      return false;
-    return vc == other.vc;
+    return height == other.height && width == other.width && vc == other.vc;
   }
 
-  bool operator!=(const Array2D<T> &other) const { return !operator==(other); }
-
-  Array2D<T> &operator=(const Array2D<T> &other) {
-    if (this == &other) // self assingment
-      return *this;
-
-    height = other.height;
-    width = other.width;
-    vc = other.vc;
-    return *this;
-  }
-
-  typename vector<T>::iterator operator[](size_t hei) {
+  typename std::vector<T>::iterator operator[](std::size_t hei) {
     return vc.begin() + hei * width;
   }
-  typename vector<T>::const_iterator operator[](size_t hei) const {
+  typename std::vector<T>::const_iterator operator[](std::size_t hei) const {
     return vc.cbegin() + hei * width;
   }
 };
@@ -55,8 +31,8 @@ public:
 template <typename T>
 std::ostream &operator<<(std::ostream &os, const Array2D<T> &arr) {
   os << std::endl;
-  for (size_t i = 0; i < arr.get_height(); ++i) {
-    for (size_t j = 0; j < arr.get_width(); ++j)
+  for (std::size_t i = 0; i < arr.get_height(); ++i) {
+    for (std::size_t j = 0; j < arr.get_width(); ++j)
       os << arr[i][j] << ", ";
     os << std::endl;
   }
