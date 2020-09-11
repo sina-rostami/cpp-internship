@@ -10,7 +10,7 @@ public:
   Array2D() : Array2D(0, 0){};
 
   Array2D(const std::size_t height1, const std::size_t width1) // constructor
-      : height(height1), width(width1), vc(std::vector<T>(height * width)) {}
+      : height(height1), width(width1), vc(height * width) {}
 
   std::size_t get_height() const { return height; }
 
