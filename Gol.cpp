@@ -23,10 +23,10 @@ public:
   }
 
   Result solve() {
-    const std::size_t MAX_SIZE =
+    const std::size_t max_size =
         1 << first_world.get_height() * first_world.get_width();
 
-    for (std::size_t i = 0; i < MAX_SIZE; i++) {
+    for (std::size_t i = 0; i < max_size; i++) {
       first_world.next_world();
 
       if (do_evolutions(first_world) == final_world) {
