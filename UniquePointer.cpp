@@ -1,8 +1,4 @@
 #include <iostream>
-#include <memory>
-
-using std::cout;
-using std::endl;
 
 template <typename T> class UniquePointer {
 private:
@@ -12,18 +8,18 @@ public:
   UniquePointer() : obj_ptr(nullptr){};
 
   UniquePointer(T *const t) : obj_ptr{t} {
-    cout << "unique pointer creating\n";
+    std::cout << "unique pointer creating\n";
   };
 
   UniquePointer(UniquePointer<T> &&other)
       : obj_ptr(nullptr) { // move constructor
-    cout << "move constructor\n";
+    std::cout << "move constructor\n";
     obj_ptr = other.obj_ptr;
     other.obj_ptr = nullptr;
   }
 
   ~UniquePointer() {
-    cout << "unique pointer deleting\n";
+    std::cout << "unique pointer deleting\n";
     delete obj_ptr;
   }
 
@@ -48,7 +44,7 @@ public:
   T *const get() const { return obj_ptr; }
 
   UniquePointer<T> &operator=(UniquePointer<T> &&other) { // move assignment
-    cout << "move assignment\n";
+    std::cout << "move assignment\n";
     if (this == &other) // self assingment
       return *this;
 
@@ -71,10 +67,9 @@ public:
 using std::string;
 
 int main() {
-  string *s =
-      new string("holle");
+  string *s = new string("holle");
   UniquePointer<string> str(s);
-  cout << *str << endl;
-  cout << *s << endl;
+  std::cout << *str << std::endl;
+  std::cout << *s << std::endl;
   return 0;
 }
