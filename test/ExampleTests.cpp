@@ -23,8 +23,6 @@ TEST(ExampleTests, test1) {
   Gol::GameOfLife gol(ev_num, Universe::World(final_world_arr));
   Gol::Result gol_result = gol.solve();
 
-  if (gol_result == Gol::Result::FOUND)
-    EXPECT_EQ(Universe::World(first_world_arr), gol.get_first_world());
-  else
-    FAIL();
+  ASSERT_EQ(gol_result, Gol::Result::FOUND);
+  EXPECT_EQ(Universe::World(first_world_arr), gol.get_first_world());
 }
