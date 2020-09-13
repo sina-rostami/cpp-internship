@@ -8,7 +8,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)  # for mixing libraries together to make
 
 enable_testing() # we're gonna have unit tests
 
-add_subdirectory(googletest)
+add_subdirectory(gtest)
 
 
 set(Sources
